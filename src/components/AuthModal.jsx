@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,8 +18,10 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
     e.preventDefault();
     if (isLogin) {
       login({ email: formData.email, name: formData.email.split('@')[0] });
+      toast.success('Login successful! Welcome back!');
     } else {
       register({ email: formData.email, name: formData.name });
+      toast.success('Registration successful! Welcome to Espezo!');
     }
     onLoginSuccess();
     onClose();

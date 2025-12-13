@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useOrder } from "../context/OrderContext";
+import { useTheme } from "../context/ThemeContext";
 import { FaPlus, FaMinus, FaTrash, FaArrowLeft } from "react-icons/fa";
 
 const CartPage = () => {
   const [activeTab, setActiveTab] = useState("cart");
   const navigate = useNavigate();
+  const { isDark } = useTheme();
   const { cartItems, removeFromCart, updateQuantity, getTotalPrice } =
     useCart();
   const { orders } = useOrder();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} transition-colors duration-200`}>
       <div className="max-w-6xl mx-auto p-4 md:p-6">
         {/* BACK BUTTON & TITLE */}
         <div className="flex items-center gap-4 mb-6 md:mb-8">

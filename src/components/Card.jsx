@@ -1,5 +1,8 @@
 import React from "react";
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useTheme } from '../context/ThemeContext';
+import { FaHeart } from 'react-icons/fa';
 
 const products = [
   {
@@ -70,9 +73,11 @@ const products = [
 
 const Card = ({ onBuyNow }) => {
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { isDark } = useTheme();
 
   return (
-    <div className="p-5 bg-black">
+    <div className={`p-5 ${isDark ? 'bg-black' : 'bg-white'} transition-colors duration-200`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((item, i) => (
           <div key={i} className="relative rounded-xl overflow-hidden shadow-lg group">
@@ -94,6 +99,21 @@ const Card = ({ onBuyNow }) => {
                 <p className="text-gray-400 line-through text-sm">{item.oldPrice}</p>
               </div>
             </div>
+
+            {/* Wishlist Button */}
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                isInWishlist(item.id) ? removeFromWishlist(item.id) : addToWishlist(item);
+              }}
+              className={`absolute top-4 left-4 p-2 rounded-full transition-colors z-20 ${
+                isInWishlist(item.id) 
+                  ? 'bg-red-500 text-white' 
+                  : 'bg-white/20 text-white hover:bg-red-500'
+              }`}
+            >
+              <FaHeart size={16} />
+            </button>
 
             {/* Buttons - Separate from overlay */}
             <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">

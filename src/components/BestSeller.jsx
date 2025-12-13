@@ -1,6 +1,8 @@
 import React from "react";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar, FaHeart } from "react-icons/fa";
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useTheme } from '../context/ThemeContext';
 
 const data = [
   {
@@ -87,11 +89,13 @@ const data = [
 
 const BestSeller = ({ onBuyNow }) => {
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { isDark } = useTheme();
 
   return (
-    <div className="p-4 bg-black">
+    <div className={`p-4 ${isDark ? 'bg-black' : 'bg-white'} transition-colors duration-200`}>
 
-    <h1 className="text-center text-3xl font-semibold text-white p-4 ">Best Seller</h1>
+    <h1 className={`text-center text-3xl font-semibold ${isDark ? 'text-white' : 'text-black'} p-4`}>Best Seller</h1>
            <br />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -109,6 +113,20 @@ const BestSeller = ({ onBuyNow }) => {
                   <p className="text-[10px] tracking-widest">WARRANTY</p>
                 </div>
               </div>
+
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  isInWishlist(item.id) ? removeFromWishlist(item.id) : addToWishlist(item);
+                }}
+                className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-10 ${
+                  isInWishlist(item.id) 
+                    ? 'bg-red-500 text-white' 
+                    : 'bg-white/80 text-gray-700 hover:bg-red-500 hover:text-white'
+                }`}
+              >
+                <FaHeart size={16} />
+              </button>
 
               <img src={item.img} className="w-full h-[300px] object-cover" alt="" />
             </div>

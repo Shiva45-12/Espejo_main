@@ -3,6 +3,7 @@ import { FaCarAlt } from "react-icons/fa";
 import { MdSupportAgent } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { SiAdguard } from "react-icons/si";
+import { useTheme } from '../context/ThemeContext';
 
 const features = [
   {
@@ -28,16 +29,18 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const { isDark } = useTheme();
+  
   return (
-    <div className="w-full bg-black py-16 border-y border-[#2a2a2a]">
+    <div className={`w-full ${isDark ? 'bg-black border-[#2a2a2a]' : 'bg-white border-gray-300'} py-16 border-y transition-colors duration-200`}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-center">
         {features.map((item, index) => (
           <div key={index} className="flex flex-col items-center gap-4">
             {item.icon}
-            <h3 className="text-white font-semibold text-[18px] tracking-wide">
+            <h3 className={`${isDark ? 'text-white' : 'text-black'} font-semibold text-[18px] tracking-wide`}>
               {item.title}
             </h3>
-            <p className="text-gray-300 text-[16px] leading-relaxed">
+            <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'} text-[16px] leading-relaxed`}>
               {item.desc}
             </p>
           </div>

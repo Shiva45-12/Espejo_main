@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useTheme } from '../context/ThemeContext';
+import { FaHeart } from 'react-icons/fa';
 
 const SearchPage = ({ onBuyNow }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { isDark } = useTheme();
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get('q') || '';
@@ -50,12 +55,12 @@ const SearchPage = ({ onBuyNow }) => {
   }, [query]);
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className={`${isDark ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen transition-colors duration-200`}>
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Search Results</h1>
           {query && (
-            <p className="text-gray-300">
+            <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               {loading ? 'Searching...' : `Found ${searchResults.length} results for "${query}"`}
             </p>
           )}
@@ -63,19 +68,19 @@ const SearchPage = ({ onBuyNow }) => {
 
         {loading ? (
           <div className="text-center py-20">
-            <div className="text-xl text-gray-400">Searching...</div>
+            <div className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Searching...</div>
           </div>
         ) : searchResults.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-xl text-gray-400 mb-4">
+            <div className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-4`}>
               {query ? `No results found for "${query}"` : 'Enter a search term to find products'}
             </div>
-            <p className="text-gray-500">Try searching for: LED Mirror, Metal Mirror, Standing Mirror, Cabinet</p>
+            <p className={`${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Try searching for: LED Mirror, Metal Mirror, Standing Mirror, Cabinet</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {searchResults.map((product) => (
-              <div key={product.id} className="bg-gray-900 rounded-lg overflow-hidden hover:bg-gray-800 transition-colors">
+              <div key={product.id} className={`${isDark ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg overflow-hidden transition-colors`}>
                 <div className="relative">
                   {product.video ? (
                     <video
@@ -95,6 +100,19 @@ const SearchPage = ({ onBuyNow }) => {
                   <div className="absolute top-4 left-4 bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold">
                     {product.category}
                   </div>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      isInWishlist(product.id) ? removeFromWishlist(product.id) : addToWishlist(product);
+                    }}
+                    className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+                      isInWishlist(product.id) 
+                        ? 'bg-red-500 text-white' 
+                        : 'bg-white/80 text-gray-700 hover:bg-red-500 hover:text-white'
+                    }`}
+                  >
+                    <FaHeart size={14} />
+                  </button>
                 </div>
                 
                 <div className="p-4">
