@@ -137,9 +137,9 @@ const ContactUsPage = () => {
           </div>
           
           <div>
-            <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-8 border`}>
+            <div className={`${isDark ?'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-8 border`}>
               <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Send Us a Message</h2>
-              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>Have a question or need assistance? Fill out the form below and we'll get back to you within 24 hours.</p>
+              <p className={`${isDark ?'text-gray-400' : 'text-gray-600'} mb-6`}>Have a question or need assistance? Fill out the form below and we'll get back to you within 24 hours.</p>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -260,22 +260,22 @@ const ProfilePage = () => {
               ) : (
                 <div className="space-y-4">
                   {orders.slice(0, 5).map((order, index) => (
-                    <div key={order.id} className={`${isDark ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-400'} rounded-lg p-5 border hover:border-orange-500/50 transition-all duration-200 transform hover:scale-[1.02]`}>
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
+                    <div key={order.id} className={`${isDark ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-400'} rounded-lg p-3 md:p-5 border hover:border-orange-500/50 transition-all duration-200 transform hover:scale-[1.02]`}>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                        <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-                              <span className="text-orange-500 font-bold text-sm">#{index + 1}</span>
+                            <div className="w-6 h-6 md:w-8 md:h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                              <span className="text-orange-500 font-bold text-xs md:text-sm">#{index + 1}</span>
                             </div>
-                            <h4 className={`font-semibold ${isDark ? 'text-white' : 'text-black'}`}>Order #{order.id}</h4>
+                            <h4 className={`font-semibold text-sm md:text-base ${isDark ? 'text-white' : 'text-black'}`}>Order #{order.id}</h4>
                           </div>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} flex items-center gap-1`}>
-                            <FaCalendarAlt size={12} /> {order.orderDate}
+                          <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} flex items-center gap-1`}>
+                            <FaCalendarAlt size={10} /> {order.orderDate}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <p className="font-bold text-2xl bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">{order.total}</p>
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold shadow-lg ${
+                        <div className="text-left sm:text-right">
+                          <p className="font-bold text-lg md:text-2xl bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">{order.total}</p>
+                          <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold shadow-lg mt-1 ${
                             order.status === 'Processing' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black' :
                             order.status === 'Shipped' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' :
                             'bg-gradient-to-r from-green-500 to-green-600 text-white'
@@ -286,8 +286,8 @@ const ProfilePage = () => {
                       </div>
                       
                       {order.item && (
-                        <div className={`flex gap-4 ${isDark ? 'bg-gray-800/50' : 'bg-gray-300/50'} rounded-lg p-3`}>
-                          <div className="w-20 h-20 flex-shrink-0">
+                        <div className={`flex gap-3 ${isDark ? 'bg-gray-800/50' : 'bg-gray-300/50'} rounded-lg p-3`}>
+                          <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0">
                             {order.item.video ? (
                               <video
                                 src={order.item.video}
@@ -302,11 +302,11 @@ const ProfilePage = () => {
                               />
                             )}
                           </div>
-                          <div className="flex-1">
-                            <p className={`font-semibold ${isDark ? 'text-white' : 'text-black'} mb-1`}>{order.item.title}</p>
-                            <div className="flex items-center gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className={`font-semibold text-sm md:text-base ${isDark ? 'text-white' : 'text-black'} mb-1 truncate`}>{order.item.title}</p>
+                            <div className="flex flex-wrap gap-1 md:gap-2">
                               <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full font-semibold">GLAZONOID</span>
-                              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-semibold">5 Year Warranty</span>
+                              <span className="text-xs bg-green-500/20 text-green-400 px-1 md:px-2 py-1 rounded-full font-semibold">5 Year Warranty</span>
                             </div>
                           </div>
                         </div>

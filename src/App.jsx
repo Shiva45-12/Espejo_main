@@ -9,6 +9,16 @@ import BestSellerPage from './components/BestSellerPage.jsx'
 import MetalMirrorPage from './components/MetalMirrorPage.jsx'
 import AboutUsPage from './components/AboutUsPage.jsx'
 import ContactUsPage from './components/ContactUsPage.jsx'
+import CompanyProfilePage from './components/CompanyProfilePage.jsx'
+import PrivacyPolicyPage from './components/PrivacyPolicyPage.jsx'
+import RefundPolicyPage from './components/RefundPolicyPage.jsx'
+import TermsOfServicePage from './components/TermsOfServicePage.jsx'
+import ProductCategoryPage from './components/ProductCategoryPage.jsx'
+import BecomeDealerPage from './components/BecomeDealerPage.jsx'
+import SitemapPage from './components/SitemapPage.jsx'
+import BlogPage from './components/BlogPage.jsx'
+import WhyChooseEspezoPage from './components/WhyChooseEspezoPage.jsx'
+import ReturnPolicyPage from './components/ReturnPolicyPage.jsx'
 import SearchPage from './components/SearchPage.jsx'
 import WishlistPage from './components/WishlistPage.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
@@ -73,6 +83,16 @@ function AppContent() {
             <Route path="/metal-mirror" element={<MetalMirrorPage onBuyNow={handleBuyNow} />} />
             <Route path="/about" element={<AboutUsPage onBuyNow={handleBuyNow} />} />
             <Route path="/contact" element={<ContactUsPage />} />
+            <Route path="/company-profile" element={<CompanyProfilePage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/products/:category" element={<ProductCategoryPage />} />
+            <Route path="/become-dealer" element={<BecomeDealerPage />} />
+            <Route path="/sitemap" element={<SitemapPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/why-choose-espezo" element={<WhyChooseEspezoPage />} />
+            <Route path="/return-policy" element={<ReturnPolicyPage />} />
             <Route path="/search" element={<SearchPage onBuyNow={handleBuyNow} />} />
             <Route path="/wishlist" element={<WishlistPage onBuyNow={handleBuyNow} />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -81,7 +101,9 @@ function AppContent() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           
-          <Footer />
+          <Footer onLoginClick={() => setShowAuth(true)} />
+
+         
           <ScrollToTopButton />
           
           <AuthModal 

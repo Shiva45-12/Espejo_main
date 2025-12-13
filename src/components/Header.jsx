@@ -101,10 +101,7 @@ const Header = ({ onUserClick }) => {
               </span>
             )}
           </div>
-          <FaSearch 
-            className="cursor-pointer" 
-            onClick={() => setSearchOpen(!searchOpen)} 
-          />
+
           <div 
             className="cursor-pointer hover:text-orange-500 transition-colors"
             onClick={toggleTheme}

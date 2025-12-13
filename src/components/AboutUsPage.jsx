@@ -44,36 +44,21 @@ const AboutUsPage = ({ onBuyNow }) => {
     <div className={`${isDark ? 'bg-black' : 'bg-white'} min-h-screen transition-colors duration-200`}>
       {/* Hero Section */}
       <div className="pt-8 pb-16">
-        <h1 className={`text-center text-5xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-4`}>About Espezo</h1>
-        <p className={`text-center text-xl ${isDark ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto px-6`}>
-          Reflecting Excellence Since 2019
+        <h1 className={`text-center text-5xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-4`}>Premium Mirrors & Bathroom Solutions for Modern Interiors</h1>
+        <p className={`text-center text-2xl ${isDark ? 'text-orange-400' : 'text-orange-500'} max-w-4xl mx-auto px-6 mb-8 font-semibold`}>
+          Redefining Spaces with Style, Clarity & Craftsmanship
         </p>
-      </div>
-
-      {/* Company Story */}
-      <div className="max-w-6xl mx-auto px-6 mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className={`${isDark ? 'text-white' : 'text-black'}`}>
-            <h2 className="text-3xl font-bold mb-6 text-orange-400">Our Story</h2>
-            <p className="text-lg leading-relaxed mb-6">
-              Founded in 2019, Espezo emerged from a simple vision: to transform ordinary spaces into extraordinary experiences through the power of premium mirrors. What started as a small workshop has grown into India's leading mirror manufacturing company.
-            </p>
-            <p className="text-lg leading-relaxed mb-6">
-              We believe that mirrors are more than just functional items – they're design elements that can completely transform your living spaces. From LED-lit vanity mirrors to elegant bathroom cabinets, every Espezo product is crafted with precision and passion.
-            </p>
-            <p className="text-lg leading-relaxed">
-              Today, we serve thousands of customers across India, delivering not just mirrors, but reflections of quality, style, and innovation.
-            </p>
-          </div>
-          <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-              alt="Modern bathroom with LED mirror" 
-              className="rounded-lg shadow-2xl"
-            />
-          </div>
+        <div className={`text-center ${isDark ? 'text-gray-300' : 'text-gray-600'} max-w-4xl mx-auto px-6 space-y-4`}>
+          <p className="text-lg leading-relaxed">
+            At ESPEZO, we create premium mirrors and bathroom solutions that blend modern design, superior quality, and everyday functionality. Our thoughtfully crafted collection enhances residential and commercial interiors with elegant reflections, durable materials, and timeless aesthetics.
+          </p>
+          <p className="text-lg leading-relaxed">
+            From sophisticated bathroom mirrors and LED mirrors to stylish vanity, wall, and standing mirrors, ESPEZO offers solutions designed to elevate your space and your lifestyle.
+          </p>
         </div>
       </div>
+
+     
 
       {/* Features Grid */}
       <div className="max-w-6xl mx-auto px-6 mb-16">

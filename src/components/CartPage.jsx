@@ -34,7 +34,7 @@ const CartPage = () => {
             className={`px-5 py-2 md:px-6 md:py-3 rounded-lg font-semibold ${
               activeTab === "cart"
                 ? "bg-orange-500 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                : `${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`
             }`}
           >
             Cart ({cartItems.length})
@@ -45,7 +45,7 @@ const CartPage = () => {
             className={`px-5 py-2 md:px-6 md:py-3 rounded-lg font-semibold ${
               activeTab === "orders"
                 ? "bg-orange-500 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                : `${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`
             }`}
           >
             Orders ({orders.length})
@@ -56,7 +56,7 @@ const CartPage = () => {
         {activeTab === "cart" ? (
           cartItems.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-400">Your cart is empty</p>
+              <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Your cart is empty</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
@@ -65,7 +65,7 @@ const CartPage = () => {
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-gray-900 rounded-lg p-4 md:p-6 flex flex-col lg:flex-row gap-6"
+                    className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} rounded-lg p-4 md:p-6 flex flex-col lg:flex-row gap-6 border ${isDark ? 'border-gray-700' : 'border-gray-300'}`}
                   >
                     {/* IMAGE */}
                     <div className="w-full h-48 md:h-56 lg:w-48 lg:h-48 flex-shrink-0">
@@ -79,9 +79,9 @@ const CartPage = () => {
                         />
                       ) : (
                         <img
-                          src={item.img}
+                          src={item.img || item.image}
                           className="w-full h-full object-cover rounded-lg"
-                          alt={item.title}
+                          alt={item.title || item.name || 'Product'}
                         />
                       )}
                     </div>
@@ -89,7 +89,7 @@ const CartPage = () => {
                     {/* DETAILS */}
                     <div className="flex-1">
                       <h3 className="text-lg md:text-xl font-semibold mb-1">
-                        {item.title}
+                        {item.title || item.name || 'Product'}
                       </h3>
 
                       <p className="text-xl md:text-2xl font-bold text-orange-500 mb-4">
@@ -98,18 +98,18 @@ const CartPage = () => {
 
                       {/* QUANTITY */}
                       <div className="flex items-center gap-4 mb-4">
-                        <span className="text-gray-400">Quantity:</span>
+                        <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Quantity:</span>
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className="bg-gray-700 hover:bg-gray-600 p-2 rounded"
+                            className={`${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-black'} p-2 rounded`}
                           >
                             <FaMinus />
                           </button>
 
-                          <span className="px-4 py-2 bg-gray-800 rounded text-lg font-semibold">
+                          <span className={`px-4 py-2 ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'} rounded text-lg font-semibold`}>
                             {item.quantity}
                           </span>
 
@@ -117,7 +117,7 @@ const CartPage = () => {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="bg-gray-700 hover:bg-gray-600 p-2 rounded"
+                            className={`${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-black'} p-2 rounded`}
                           >
                             <FaPlus />
                           </button>
@@ -125,7 +125,7 @@ const CartPage = () => {
                       </div>
 
                       {/* PRODUCT INFO */}
-                      <div className="space-y-1 text-gray-300 mb-4 text-sm md:text-base">
+                      <div className={`space-y-1 ${isDark ? 'text-gray-300' : 'text-gray-600'} mb-4 text-sm md:text-base`}>
                         <p>
                           <span className="font-semibold">Brand:</span>{" "}
                           GLAZONOID
@@ -157,7 +157,7 @@ const CartPage = () => {
               </div>
 
               {/* RIGHT SIDE — ORDER SUMMARY */}
-              <div className="bg-gray-900 rounded-lg p-5 md:p-6 h-fit">
+              <div className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} rounded-lg p-5 md:p-6 h-fit border ${isDark ? 'border-gray-700' : 'border-gray-300'}`}>
                 <h2 className="text-xl md:text-2xl font-bold mb-6">
                   Order Summary
                 </h2>
@@ -170,8 +170,8 @@ const CartPage = () => {
 
                     return (
                       <div key={item.id} className="flex justify-between">
-                        <span className="text-gray-300">
-                          {item.title.substring(0, 18)}... ×{item.quantity}
+                        <span className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                          {(item.title || item.name || 'Product').substring(0, 18)}... ×{item.quantity}
                         </span>
 
                         <span>
@@ -185,7 +185,7 @@ const CartPage = () => {
                   })}
                 </div>
 
-                <hr className="border-gray-700 mb-4" />
+                <hr className={`${isDark ? 'border-gray-700' : 'border-gray-300'} mb-4`} />
 
                 <div className="flex justify-between text-xl font-bold mb-6">
                   <span>Total:</span>
@@ -207,18 +207,18 @@ const CartPage = () => {
           /* ========== ORDERS SECTION ========== */
           orders.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-400">No orders yet</p>
+              <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>No orders yet</p>
             </div>
           ) : (
             <div className="space-y-6">
               {orders.map((order) => (
-                <div key={order.id} className="bg-gray-900 rounded-lg p-6">
+                <div key={order.id} className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} rounded-lg p-6 border ${isDark ? 'border-gray-700' : 'border-gray-300'}`}>
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="text-lg font-semibold">
                         Order #{order.id}
                       </h3>
-                      <p className="text-gray-400">
+                      <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                         Ordered on {order.orderDate}
                       </p>
 
@@ -243,7 +243,7 @@ const CartPage = () => {
                   </div>
 
                   {order.item && (
-                    <div className="flex gap-4 border-t border-gray-700 pt-4">
+                    <div className={`flex gap-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-300'} pt-4`}>
                       <div className="w-24 h-24 flex-shrink-0">
                         {order.item.video ? (
                           <video
@@ -262,18 +262,18 @@ const CartPage = () => {
 
                       <div className="flex-1">
                         <h4 className="font-semibold">{order.item.title || 'Product'}</h4>
-                        <p className="text-gray-400 mt-1">Brand: GLAZONOID</p>
-                        <p className="text-gray-400">Warranty: 5 Years</p>
+                        <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mt-1`}>Brand: GLAZONOID</p>
+                        <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Warranty: 5 Years</p>
                       </div>
                     </div>
                   )}
 
                   {order.shippingInfo && (
-                    <div className="mt-4 p-4 bg-gray-800 rounded">
+                    <div className={`mt-4 p-4 ${isDark ? 'bg-gray-800' : 'bg-gray-200'} rounded`}>
                       <h5 className="font-semibold mb-2">
                         Shipping Address:
                       </h5>
-                      <p className="text-gray-300 text-sm">
+                      <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} text-sm`}>
                         {order.shippingInfo.firstName || ''}{" "}
                         {order.shippingInfo.lastName || ''}
                         <br />
