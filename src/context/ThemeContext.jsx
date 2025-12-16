@@ -11,12 +11,16 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDark(savedTheme === 'dark');
+    } else {
+      // Set default to light theme if no saved preference
+      localStorage.setItem('theme', 'light');
+      setIsDark(false);
     }
   }, []);
 
