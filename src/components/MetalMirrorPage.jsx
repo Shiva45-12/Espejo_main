@@ -61,22 +61,22 @@ const MetalMirrorPage = ({ onBuyNow }) => {
 
   const features = [
     {
-      icon: <FaShieldAlt className="text-3xl text-orange-500" />,
+      icon: <FaShieldAlt className="text-3xl" style={{color: '#862b2a'}} />,
       title: "Rust Resistant",
       description: "Special coating prevents rust and corrosion"
     },
     {
-      icon: <FaStar className="text-3xl text-orange-500" />,
+      icon: <FaStar className="text-3xl" style={{color: '#862b2a'}} />,
       title: "Premium Finish",
       description: "High-quality metal finishes that last years"
     },
     {
-      icon: <FaTools className="text-3xl text-orange-500" />,
+      icon: <FaTools className="text-3xl" style={{color: '#862b2a'}} />,
       title: "Easy Installation",
       description: "Simple wall mounting with included hardware"
     },
     {
-      icon: <FaLeaf className="text-3xl text-orange-500" />,
+      icon: <FaLeaf className="text-3xl" style={{color: '#862b2a'}} />,
       title: "Eco-Friendly",
       description: "Sustainable materials and processes"
     }
@@ -121,7 +121,7 @@ const MetalMirrorPage = ({ onBuyNow }) => {
                   alt={mirror.title}
                   className="w-full h-64 object-cover"
                 />
-                <div className="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="text-white px-3 py-1 rounded-full text-sm font-semibold absolute top-4 left-4" style={{backgroundColor: '#862b2a'}}>
                   Metal Frame
                 </div>
                 <button 
@@ -153,20 +153,26 @@ const MetalMirrorPage = ({ onBuyNow }) => {
                 </div>
                 
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl font-bold text-orange-500">{mirror.price}</span>
+                  <span className="text-2xl font-bold" style={{color: '#862b2a'}}>{mirror.price}</span>
                   <span className={`${isDark ? 'text-gray-400' : 'text-gray-500'} line-through`}>{mirror.oldPrice}</span>
                 </div>
                 
                 <div className="flex gap-3">
                   <button 
                     onClick={() => onBuyNow && onBuyNow(mirror)}
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold transition-colors"
+                    className="flex-1 text-white py-2 rounded-lg font-semibold transition-colors"
+                    style={{backgroundColor: '#898383'}}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
                   >
                     Buy Now
                   </button>
                   <button 
                     onClick={() => addToCart(mirror)}
-                    className={`flex-1 ${isDark ? 'bg-gray-800 hover:bg-gray-700 border-gray-600' : 'bg-gray-300 hover:bg-gray-400 border-gray-400'} ${isDark ? 'text-white' : 'text-black'} py-2 rounded-lg font-semibold border transition-colors`}
+                    className="flex-1 text-white py-2 rounded-lg font-semibold transition-colors"
+                    style={{backgroundColor: '#862b2a'}}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                   >
                     Add to Cart
                   </button>
@@ -189,15 +195,15 @@ const MetalMirrorPage = ({ onBuyNow }) => {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">5+ Years</div>
+              <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>5+ Years</div>
               <div className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Warranty Coverage</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">100%</div>
+              <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>100%</div>
               <div className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Rust Resistant</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-orange-500 mb-2">50+</div>
+              <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>50+</div>
               <div className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Design Options</div>
             </div>
           </div>

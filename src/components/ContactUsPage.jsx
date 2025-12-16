@@ -39,12 +39,12 @@ const ContactUsPage = () => {
         {/* Contact Methods */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border text-center hover:border-orange-500/50 transition-all duration-200`}>
-            <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FaPhone className="text-orange-500 text-2xl" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{backgroundColor: '#862b2a20'}}>
+              <FaPhone className="text-2xl" style={{color: '#862b2a'}} />
             </div>
             <h3 className={`font-bold text-lg mb-2 ${isDark ? 'text-white' : 'text-black'}`}>Call Us</h3>
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm mb-3`}>Mon-Sat 9AM-7PM</p>
-            <p className="text-orange-400 font-semibold">+91 9876543210</p>
+            <p className="font-semibold" style={{color: '#862b2a'}}>+91 xxxxxxxxxx</p>
           </div>
 
           <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border text-center hover:border-orange-500/50 transition-all duration-200`}>
@@ -53,7 +53,7 @@ const ContactUsPage = () => {
             </div>
             <h3 className={`font-bold text-lg mb-2 ${isDark ? 'text-white' : 'text-black'}`}>WhatsApp</h3>
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm mb-3`}>Quick Support</p>
-            <p className="text-green-400 font-semibold">+91 9876543210</p>
+            <p className="text-green-400 font-semibold">+91 xxxxxxxxxx</p>
           </div>
 
           <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border text-center hover:border-orange-500/50 transition-all duration-200`}>
@@ -62,7 +62,7 @@ const ContactUsPage = () => {
             </div>
             <h3 className={`font-bold text-lg mb-2 ${isDark ? 'text-white' : 'text-black'}`}>Email Us</h3>
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm mb-3`}>24/7 Support</p>
-            <p className="text-blue-400 font-semibold">info@espezo.com</p>
+            <p className="text-blue-400 font-semibold">info@espejo.com</p>
           </div>
 
           <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border text-center hover:border-orange-500/50 transition-all duration-200`}>
@@ -78,23 +78,32 @@ const ContactUsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-8 border`}>
-              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Contact Information</h2>
+              <h2 className="text-3xl font-bold mb-6" style={{color: '#862b2a'}}>Contact Information</h2>
               
               <div className="space-y-6">
                 <div className={`flex items-start gap-4 p-4 ${isDark ? 'bg-gray-800/50' : 'bg-gray-200/50'} rounded-lg`}>
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FaMapMarkerAlt className="text-orange-500" />
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{backgroundColor: '#862b2a20'}}>
+                    <FaMapMarkerAlt style={{color: '#862b2a'}} />
                   </div>
                   <div>
                     <h3 className={`font-bold text-lg mb-1 ${isDark ? 'text-white' : 'text-black'}`}>Our Address</h3>
                     <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>123 Mirror Street, Glass City, Mumbai</p>
                     <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Maharashtra, India - 400001</p>
+                    <button
+                      onClick={() => window.open('https://maps.google.com/?q=123+Mirror+Street,+Glass+City,+Mumbai,+Maharashtra,+India', '_blank')}
+                      className="mt-3 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
+                      style={{backgroundColor: '#862b2a'}}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
+                    >
+                      <FaMapMarkerAlt /> View on Google Maps
+                    </button>
                   </div>
                 </div>
                 
                 <div className={`flex items-start gap-4 p-4 ${isDark ? 'bg-gray-800/50' : 'bg-gray-200/50'} rounded-lg`}>
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FaClock className="text-orange-500" />
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{backgroundColor: '#862b2a20'}}>
+                    <FaClock style={{color: '#862b2a'}} />
                   </div>
                   <div>
                     <h3 className={`font-bold text-lg mb-1 ${isDark ? 'text-white' : 'text-black'}`}>Business Hours</h3>
@@ -104,8 +113,8 @@ const ContactUsPage = () => {
                 </div>
                 
                 <div className={`flex items-start gap-4 p-4 ${isDark ? 'bg-gray-800/50' : 'bg-gray-200/50'} rounded-lg`}>
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FaHeadset className="text-orange-500" />
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{backgroundColor: '#862b2a20'}}>
+                    <FaHeadset style={{color: '#862b2a'}} />
                   </div>
                   <div>
                     <h3 className={`font-bold text-lg mb-1 ${isDark ? 'text-white' : 'text-black'}`}>Customer Support</h3>
@@ -138,7 +147,7 @@ const ContactUsPage = () => {
           
           <div>
             <div className={`${isDark ?'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-8 border`}>
-              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Send Us a Message</h2>
+              <h2 className="text-3xl font-bold mb-6" style={{color: '#862b2a'}}>Send Us a Message</h2>
               <p className={`${isDark ?'text-gray-400' : 'text-gray-600'} mb-6`}>Have a question or need assistance? Fill out the form below and we'll get back to you within 24 hours.</p>
               
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -198,7 +207,10 @@ const ContactUsPage = () => {
                 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-4 rounded-lg font-semibold text-lg transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                  className="w-full text-white py-4 rounded-lg font-semibold text-lg transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                  style={{backgroundColor: '#862b2a'}}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                 >
                   Send Message
                 </button>

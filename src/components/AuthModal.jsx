@@ -48,7 +48,9 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                 required
               />
             </div>
@@ -61,7 +63,9 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+              onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+              onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
               required
             />
           </div>
@@ -73,7 +77,9 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+              onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+              onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
               required
             />
           </div>
@@ -86,7 +92,9 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                 required
               />
             </div>
@@ -94,7 +102,10 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
           <button
             type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
+            className="w-full text-white py-2 rounded-lg font-semibold transition-colors"
+            style={{backgroundColor: '#862b2a'}}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
           >
             {isLogin ? 'Login' : 'Register'}
           </button>
@@ -103,7 +114,8 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
         <div className="mt-4 text-center">
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="text-orange-500 hover:underline"
+            className="hover:underline transition-colors"
+            style={{color: '#862b2a'}}
           >
             {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
           </button>

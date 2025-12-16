@@ -9,13 +9,13 @@ const BecomeDealerPage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-12 px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-orange-500">Become a Dealer</h1>
+        <h1 className="text-4xl font-bold text-center mb-8" style={{color: '#862b2a'}}>Become a Dealer</h1>
         
         <div className="space-y-8">
           <section>
-            <h2 className="text-2xl font-semibold mb-4">Join ESPEZO Dealer Network</h2>
+            <h2 className="text-2xl font-semibold mb-4">Join Espejo Dealer Network</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              Partner with ESPEZO and become an authorized dealer to expand your business with our premium mirror collection.
+              Partner with Espejo and become an authorized dealer to expand your business with our premium mirror collection.
             </p>
           </section>
 
@@ -48,7 +48,10 @@ const BecomeDealerPage = () => {
               </p>
               <button 
                 onClick={() => setShowModal(true)}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                className="text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                style={{backgroundColor: '#862b2a'}}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
               >
                 Contact Us to Apply
               </button>

@@ -126,13 +126,19 @@ const SearchPage = ({ onBuyNow }) => {
                   <div className="flex gap-2">
                     <button 
                       onClick={() => onBuyNow && onBuyNow(product)}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-semibold transition-colors text-sm"
+                      className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm"
+                      style={{backgroundColor: '#898383'}}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
                     >
                       Buy Now
                     </button>
                     <button 
                       onClick={() => addToCart(product)}
-                      className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2 rounded font-semibold border border-gray-600 transition-colors text-sm"
+                      className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm"
+                      style={{backgroundColor: '#862b2a'}}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                     >
                       Add to Cart
                     </button>

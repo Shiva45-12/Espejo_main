@@ -44,13 +44,16 @@ const Slider = ({ onOrderNow }) => {
           INTELLIGENT MIRRORS
         </p>
 
-        <p className="text-orange-400 font-semibold text-lg md:text-2xl">
+        <p className="font-semibold text-lg md:text-2xl" style={{color: '#862b2a'}}>
           75000+ HAPPY CLIENT
         </p>
 
         <button 
           onClick={handleOrderNow}
-          className="bg-orange-400 hover:bg-orange-500 text-white font-semibold text-lg md:text-xl px-8 py-3 rounded-lg mt-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
+          className="text-white font-semibold text-lg md:text-xl px-8 py-3 rounded-lg mt-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
+          style={{backgroundColor: '#898383'}}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
         >
           Order Now
         </button>

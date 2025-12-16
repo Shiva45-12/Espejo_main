@@ -7,7 +7,7 @@ const ReturnPolicyPage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-8 md:py-12 px-4 md:px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-orange-500">Return Policy</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8" style={{color: '#862b2a'}}>Return Policy</h1>
         
         <div className="space-y-6 md:space-y-8">
           <section>
@@ -17,7 +17,7 @@ const ReturnPolicyPage = () => {
           <section>
             <h2 className="text-xl md:text-2xl font-semibold mb-3 md:mb-4">Eligibility for Returns</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed mb-4`}>
-              At ESPEZO, customer satisfaction is important to us. Returns are accepted under the following conditions:
+              At Espejo, customer satisfaction is important to us. Returns are accepted under the following conditions:
             </p>
             <ul className={`${isDark ? 'text-gray-300' : 'text-gray-700'} space-y-2 list-disc pl-6`}>
               <li>The product is damaged, defective, or incorrect at the time of delivery</li>
@@ -38,7 +38,7 @@ const ReturnPolicyPage = () => {
           <section>
             <h2 className="text-xl md:text-2xl font-semibold mb-3 md:mb-4">Return Process</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              To initiate a return, customers must contact ESPEZO customer support with order details and supporting images. Upon approval, return instructions will be shared.
+              To initiate a return, customers must contact Espejo customer support with order details and supporting images. Upon approval, return instructions will be shared.
             </p>
           </section>
         </div>

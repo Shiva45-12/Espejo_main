@@ -33,7 +33,7 @@ const CartPage = () => {
             onClick={() => setActiveTab("cart")}
             className={`px-5 py-2 md:px-6 md:py-3 rounded-lg font-semibold ${
               activeTab === "cart"
-                ? "bg-orange-500 text-white"
+                ? "bg-[#862b2a] text-white"
                 : `${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`
             }`}
           >
@@ -44,7 +44,7 @@ const CartPage = () => {
             onClick={() => setActiveTab("orders")}
             className={`px-5 py-2 md:px-6 md:py-3 rounded-lg font-semibold ${
               activeTab === "orders"
-                ? "bg-orange-500 text-white"
+                ? "bg-[#862b2a] text-white"
                 : `${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`
             }`}
           >

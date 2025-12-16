@@ -140,7 +140,7 @@ const ProductCategoryPage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-12 px-6`}>
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-4 text-orange-500">{currentCategory.title}</h1>
+        <h1 className="text-4xl font-bold text-center mb-4 text-[#862b2a]">{currentCategory.title}</h1>
         <p className={`text-center mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
           {currentCategory.description}
         </p>
@@ -159,10 +159,13 @@ const ProductCategoryPage = () => {
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-              <p className="text-orange-500 text-lg font-bold mb-4">{product.price}</p>
+              <p className="text-[#862b2a] text-lg font-bold mb-4">{product.price}</p>
               <button 
                 onClick={() => handleAddToCart(product)}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold transition-colors"
+                className="w-full text-white py-2 rounded-lg font-semibold transition-colors"
+                style={{backgroundColor: '#862b2a'}}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
               >
                 Add to Cart
               </button>

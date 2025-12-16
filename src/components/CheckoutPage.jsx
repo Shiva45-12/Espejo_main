@@ -32,7 +32,7 @@ const CheckoutPage = ({ selectedItem }) => {
       shippingInfo: formData,
       total: selectedItem?.price
     });
-    toast.success('🎉 Order placed successfully! Thank you for shopping with Espezo!');
+    toast.success('🎉 Order placed successfully! Thank you for shopping with Espejo!');
     navigate('/');
   };
 

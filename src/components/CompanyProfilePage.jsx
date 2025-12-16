@@ -7,13 +7,13 @@ const CompanyProfilePage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-12 px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-orange-500">Company Profile</h1>
+        <h1 className="text-4xl font-bold text-center mb-8" style={{color: '#862b2a'}}>Company Profile</h1>
         
         <div className="space-y-8">
           <section>
-            <h2 className="text-2xl font-semibold mb-4">About Espezo</h2>
+            <h2 className="text-2xl font-semibold mb-4">About Espejo</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              Espezo is a leading manufacturer and supplier of premium quality mirrors and bathroom accessories. 
+              Espejo is a leading manufacturer and supplier of premium quality mirrors and bathroom accessories. 
               We specialize in creating innovative mirror solutions that combine functionality with aesthetic appeal.
             </p>
           </section>

@@ -54,7 +54,10 @@ const ProfilePage = () => {
           <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-6`}>You need to login to view your profile</p>
           <button 
             onClick={() => navigate('/')}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
+            className="text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            style={{backgroundColor: '#862b2a'}}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
           >
             Go to Home
           </button>
@@ -67,7 +70,7 @@ const ProfilePage = () => {
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} transition-colors duration-200`}>
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex items-center gap-4 mb-8">
-          <button onClick={() => navigate('/')} className="text-2xl hover:text-orange-500">
+          <button onClick={() => navigate('/')} className="text-2xl transition-colors" onMouseEnter={(e) => e.target.style.color = '#862b2a'} onMouseLeave={(e) => e.target.style.color = ''}>
             <FaArrowLeft />
           </button>
           <h1 className="text-3xl font-bold">My Profile</h1>
@@ -75,7 +78,7 @@ const ProfilePage = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg p-4 text-white">
+          <div className="bg-gradient-to-r from-[#862b2a] to-[#a0342f] rounded-lg p-4 text-white">
             <div className="flex items-center gap-3">
               <FaShoppingBag size={24} />
               <div>
@@ -122,7 +125,7 @@ const ProfilePage = () => {
             <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border`}>
               <div className="text-center mb-6">
                 <div className="relative">
-                  <div className="w-28 h-28 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <div className="w-28 h-28 bg-gradient-to-r from-[#862b2a] to-[#a0342f] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <span className="text-white font-bold text-3xl">
                       {user.name?.charAt(0)?.toUpperCase() || 'U'}
                     </span>
@@ -133,10 +136,10 @@ const ProfilePage = () => {
                     </div>
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold break-words bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">{user.name}</h2>
+                <h2 className="text-2xl font-bold break-words" style={{color: '#862b2a'}}>{user.name}</h2>
                 <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} break-words text-sm`}>{user.email}</p>
                 <div className="mt-3">
-                  <span className="inline-flex items-center gap-1 bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold" style={{backgroundColor: '#862b2a20', color: '#862b2a'}}>
                     <FaCrown size={12} /> Premium Member
                   </span>
                 </div>
@@ -145,8 +148,8 @@ const ProfilePage = () => {
               {!isEditing ? (
                 <div className="space-y-4">
                   <div className={`flex items-center gap-3 p-4 ${isDark ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-400'} rounded-lg border`}>
-                    <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                      <FaUser className="text-orange-500 flex-shrink-0" />
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{backgroundColor: '#862b2a20'}}>
+                      <FaUser className="flex-shrink-0" style={{color: '#862b2a'}} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} font-medium`}>Full Name</p>
@@ -155,8 +158,8 @@ const ProfilePage = () => {
                   </div>
                   
                   <div className={`flex items-center gap-3 p-4 ${isDark ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-400'} rounded-lg border`}>
-                    <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                      <FaEnvelope className="text-orange-500 flex-shrink-0" />
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{backgroundColor: '#862b2a20'}}>
+                      <FaEnvelope className="flex-shrink-0" style={{color: '#862b2a'}} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} font-medium`}>Email Address</p>
@@ -165,8 +168,8 @@ const ProfilePage = () => {
                   </div>
                   
                   <div className={`flex items-center gap-3 p-4 ${isDark ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-400'} rounded-lg border`}>
-                    <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                      <FaCalendarAlt className="text-orange-500 flex-shrink-0" />
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{backgroundColor: '#862b2a20'}}>
+                      <FaCalendarAlt className="flex-shrink-0" style={{color: '#862b2a'}} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} font-medium`}>Member Since</p>
@@ -177,7 +180,10 @@ const ProfilePage = () => {
                   <div className="space-y-3 mt-8">
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-3 shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl border border-orange-400/30"
+                      className="w-full text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-3 shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl border"
+                      style={{background: 'linear-gradient(to right, #862b2a, #a0342f)', borderColor: '#862b2a50'}}
+                      onMouseEnter={(e) => e.target.style.background = 'linear-gradient(to right, #6b1f1e, #7d2924)'}
+                      onMouseLeave={(e) => e.target.style.background = 'linear-gradient(to right, #862b2a, #a0342f)'}
                     >
                       <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                         <FaEdit size={16} />
@@ -240,7 +246,7 @@ const ProfilePage = () => {
           <div className="lg:col-span-2">
             <div className={`${isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700' : 'bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300'} rounded-xl p-6 border`}>
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Order History</h3>
+                <h3 className="text-2xl font-bold" style={{color: '#862b2a'}}>Order History</h3>
                 <div className={`flex items-center gap-2 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   <FaShoppingBag />
                   <span>{orders.length} Orders</span>
@@ -252,7 +258,10 @@ const ProfilePage = () => {
                   <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} mb-4`}>No orders yet</p>
                   <button 
                     onClick={() => navigate('/')}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
+                    className="text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                    style={{backgroundColor: '#862b2a'}}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                   >
                     Start Shopping
                   </button>
@@ -264,8 +273,8 @@ const ProfilePage = () => {
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="w-6 h-6 md:w-8 md:h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-                              <span className="text-orange-500 font-bold text-xs md:text-sm">#{index + 1}</span>
+                            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#862b2a20'}}>
+                              <span className="font-bold text-xs md:text-sm" style={{color: '#862b2a'}}>#{index + 1}</span>
                             </div>
                             <h4 className={`font-semibold text-sm md:text-base ${isDark ? 'text-white' : 'text-black'}`}>Order #{order.id}</h4>
                           </div>
@@ -274,7 +283,7 @@ const ProfilePage = () => {
                           </p>
                         </div>
                         <div className="text-left sm:text-right">
-                          <p className="font-bold text-lg md:text-2xl bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">{order.total}</p>
+                          <p className="font-bold text-lg md:text-2xl" style={{color: '#862b2a'}}>{order.total}</p>
                           <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold shadow-lg mt-1 ${
                             order.status === 'Processing' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black' :
                             order.status === 'Shipped' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' :
@@ -305,7 +314,7 @@ const ProfilePage = () => {
                           <div className="flex-1 min-w-0">
                             <p className={`font-semibold text-sm md:text-base ${isDark ? 'text-white' : 'text-black'} mb-1 truncate`}>{order.item.title}</p>
                             <div className="flex flex-wrap gap-1 md:gap-2">
-                              <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full font-semibold">GLAZONOID</span>
+                              <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{backgroundColor: '#862b2a20', color: '#862b2a'}}>GLAZONOID</span>
                               <span className="text-xs bg-green-500/20 text-green-400 px-1 md:px-2 py-1 rounded-full font-semibold">5 Year Warranty</span>
                             </div>
                           </div>
@@ -317,7 +326,10 @@ const ProfilePage = () => {
                   {orders.length > 5 && (
                     <button 
                       onClick={() => navigate('/cart')}
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-4 rounded-lg font-semibold shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
+                      className="w-full text-white py-4 rounded-lg font-semibold shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
+                      style={{background: 'linear-gradient(to right, #862b2a, #a0342f)'}}
+                      onMouseEnter={(e) => e.target.style.background = 'linear-gradient(to right, #6b1f1e, #7d2924)'}
+                      onMouseLeave={(e) => e.target.style.background = 'linear-gradient(to right, #862b2a, #a0342f)'}
                     >
                       <FaShoppingBag /> View All {orders.length} Orders
                     </button>

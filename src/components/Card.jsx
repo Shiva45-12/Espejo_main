@@ -122,7 +122,10 @@ const Card = ({ onBuyNow }) => {
                   e.stopPropagation();
                   onBuyNow && onBuyNow(item);
                 }}
-                className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded font-semibold transition-colors text-sm cursor-pointer"
+                className="text-white px-3 py-2 rounded font-semibold transition-colors text-sm cursor-pointer"
+                style={{backgroundColor: '#898383'}}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
               >
                 Buy Now
               </button>
@@ -131,7 +134,10 @@ const Card = ({ onBuyNow }) => {
                   e.stopPropagation();
                   addToCart(item);
                 }}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded font-semibold transition-colors text-sm cursor-pointer"
+                className="text-white px-3 py-2 rounded font-semibold transition-colors text-sm cursor-pointer"
+                style={{backgroundColor: '#862b2a'}}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
               >
                 Add to Cart
               </button>

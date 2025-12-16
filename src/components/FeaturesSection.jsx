@@ -7,22 +7,22 @@ import { useTheme } from '../context/ThemeContext';
 
 const features = [
   {
-    icon: <FaCarAlt className="text-[#f6c343] w-12 h-12" />,
+    icon: <FaCarAlt className="w-12 h-12" style={{color: '#862b2a'}} />,
     title: "100% CUSTOMIZATION",
     desc: "All products we offer are tailored made for you",
   },
   {
-    icon: <MdSupportAgent className="text-[#f6c343] w-12 h-12" />,
+    icon: <MdSupportAgent className="w-12 h-12" style={{color: '#862b2a'}} />,
     title: "SUPPORT 24/7",
     desc: "Contact us 24 hours a day, 7 days a week",
   },
   {
-    icon: <TbTruckDelivery className="text-[#f6c343] w-12 h-12" />,
+    icon: <TbTruckDelivery className="w-12 h-12" style={{color: '#862b2a'}} />,
     title: "100% SAFE DELIVERY",
     desc: "All products comes with free transportation insurance",
   },
   {
-    icon: <SiAdguard className="text-[#f6c343] w-12 h-12" />,
+    icon: <SiAdguard className="w-12 h-12" style={{color: '#862b2a'}} />,
     title: "5 YEAR WARRANTY",
     desc: "We are the only brand to provide 5 years of warranty",
   },

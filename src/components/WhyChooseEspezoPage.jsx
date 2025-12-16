@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 
-const WhyChooseEspezoPage = () => {
+const WhyChooseEspejoPage = () => {
   const { isDark } = useTheme();
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-8 md:py-12 px-4 md:px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-orange-500">Why Choose ESPEZO?</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8" style={{color: '#862b2a'}}>Why Choose Espejo?</h1>
         
         <div className="space-y-6 md:space-y-8">
           <section>
@@ -31,7 +31,7 @@ const WhyChooseEspezoPage = () => {
               <span className="text-green-500">✔</span> Functional Innovation
             </h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              From LED illumination to moisture-resistant finishes, ESPEZO mirrors are designed for real-world use.
+              From LED illumination to moisture-resistant finishes, Espejo mirrors are designed for real-world use.
             </p>
           </section>
 
@@ -49,4 +49,4 @@ const WhyChooseEspezoPage = () => {
   );
 };
 
-export default WhyChooseEspezoPage;
+export default WhyChooseEspejoPage;

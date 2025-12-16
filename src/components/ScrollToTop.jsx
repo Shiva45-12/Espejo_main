@@ -31,11 +31,10 @@ const ScrollToTop = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
-            isDark 
-              ? 'bg-orange-500 hover:bg-orange-600 text-white' 
-              : 'bg-orange-500 hover:bg-orange-600 text-white'
-          }`}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 text-white"
+          style={{backgroundColor: '#862b2a'}}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
           title="Scroll to top"
         >
           <FaArrowUp size={20} />

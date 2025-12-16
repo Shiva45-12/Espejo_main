@@ -7,6 +7,8 @@ import { useTheme } from '../context/ThemeContext';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 
+
+
 const Header = ({ onUserClick }) => {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -52,7 +54,7 @@ const Header = ({ onUserClick }) => {
     <div className={`${isDark ? 'bg-black text-white' : 'bg-white text-black'} w-full sticky top-0 z-50 shadow-lg transition-colors duration-200`}>
 
       {/* Header Row */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between px-4 py-2">
 
         {/* Hamburger (LEFT on Mobile) */}
         <div className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
@@ -60,28 +62,39 @@ const Header = ({ onUserClick }) => {
         </div>
 
         {/* Logo Center on Mobile */}
-        <h1 
-          className="text-3xl font-extrabold mx-auto text-orange-500 md:mx-0 cursor-pointer"
+        <h1
+          className="mx-auto md:mx-0 cursor-pointer flex items-center"
           onClick={() => navigate('/')}
         >
-          Espezo
+          <img
+            src={"/Logo/PNG/Logo.png"}
+            alt="ESPEJO Logo"
+            className="h-[30px] w-[200px] md:h-[70px] md:w-[300px] object-contain"
+          />
+
         </h1>
-              {/* DESKTOP MENU */}
-      <ul className="hidden md:flex md:items-center md:justify-center md:gap-10 md:p-4 font-semibold text-lg">
-        {Menu.map((item, index) => (
-          <li 
-            key={index} 
-            className={`cursor-pointer transition-colors ${
-              location.pathname === item.path 
-                ? 'text-orange-400 border-b-2 border-orange-400 pb-1' 
-                : 'hover:text-orange-400'
-            }`}
-            onClick={() => handleMenuClick(item.path)}
-          >
-            {item.name}
-          </li>
-        ))}
-      </ul>
+
+
+
+
+        {/* DESKTOP MENU */}
+        <ul className="hidden md:flex md:items-center md:justify-center md:gap-10 md:py-2 font-semibold text-lg">
+          {Menu.map((item, index) => (
+            <li
+              key={index}
+              className={`cursor-pointer transition-colors pb-1`}
+              style={{
+                color: location.pathname === item.path ? '#862b2a' : 'inherit',
+                borderBottom: location.pathname === item.path ? '2px solid #862b2a' : 'none'
+              }}
+              onMouseEnter={(e) => e.target.style.color = '#862b2a'}
+              onMouseLeave={(e) => e.target.style.color = location.pathname === item.path ? '#862b2a' : 'inherit'}
+              onClick={() => handleMenuClick(item.path)}
+            >
+              {item.name}
+            </li>
+          ))}
+        </ul>
 
         {/* Icons Right */}
         <div className="flex gap-4 text-2xl md:mr-10">
@@ -96,22 +109,27 @@ const Header = ({ onUserClick }) => {
           <div className="relative cursor-pointer" onClick={() => navigate('/cart')}>
             <FaShoppingCart />
             {getTotalItems() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" style={{ backgroundColor: '#862b2a' }}>
                 {getTotalItems()}
               </span>
             )}
           </div>
 
-          <div 
-            className="cursor-pointer hover:text-orange-500 transition-colors"
+          <div
+            className="cursor-pointer transition-colors"
+            onMouseEnter={(e) => e.target.style.color = '#862b2a'}
+            onMouseLeave={(e) => e.target.style.color = ''}
             onClick={toggleTheme}
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {isDark ? <FaSun /> : <FaMoon />}
           </div>
           {isLoggedIn ? (
-            <div 
-              className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors"
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+              style={{ backgroundColor: '#862b2a' }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
               onClick={() => navigate('/profile')}
               title={`Profile - ${user?.name}`}
             >
@@ -135,13 +153,16 @@ const Header = ({ onUserClick }) => {
         `}
       >
         {Menu.map((item, index) => (
-          <li 
-            key={index} 
-            className={`py-3 cursor-pointer transition-colors ${
-              location.pathname === item.path 
-                ? `text-orange-400 ${isDark ? 'bg-gray-800' : 'bg-gray-200'} mx-4 rounded` 
-                : 'hover:text-orange-400'
-            }`}
+          <li
+            key={index}
+            className={`py-3 cursor-pointer transition-colors ${location.pathname === item.path
+                ? `mx-4 rounded`
+                : ''
+              }`}
+            style={{
+              color: location.pathname === item.path ? '#862b2a' : 'inherit',
+              backgroundColor: location.pathname === item.path ? (isDark ? '#6b6161' : '#f3f4f6') : 'transparent'
+            }}
             onClick={() => handleMenuClick(item.path)}
           >
             {item.name}
@@ -161,12 +182,17 @@ const Header = ({ onUserClick }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search mirrors, accessories..."
-                className={`w-full px-4 py-2 ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'} rounded-lg focus:outline-none focus:border-orange-500 pr-10 transition-colors duration-200`}
+                className={`w-full px-4 py-2 ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'} rounded-lg focus:outline-none pr-10 transition-colors duration-200`}
+                onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                onBlur={(e) => e.target.style.borderColor = ''}
                 autoFocus
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-500 hover:text-orange-400"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 transition-colors"
+                style={{ color: '#862b2a' }}
+                onMouseEnter={(e) => e.target.style.color = '#6b1f1e'}
+                onMouseLeave={(e) => e.target.style.color = '#862b2a'}
               >
                 <FaSearch />
               </button>

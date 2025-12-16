@@ -96,7 +96,7 @@ const AboutEspezo = ({ onBuyNow }) => {
 
             {/* Details */}
             <div className="p-3">
-              <p className="text-gray-500 font-bold text-xs">GLAZONOID</p>
+              <p className="text-gray-500 font-bold text-xs">ESPEJO</p>
 
               <h3 className="font-semibold mt-1 text-sm line-clamp-1">{item.title}</h3>
 
@@ -117,7 +117,7 @@ const AboutEspezo = ({ onBuyNow }) => {
               {/* Pricing */}
               <div className="mt-1">
                 <p className="text-gray-400 text-sm line-through">{item.oldPrice}</p>
-                <p className="font-bold text-orange-500 text-lg">From {item.newPrice}</p>
+                <p className="font-bold text-lg" style={{color: '#862b2a'}}>From {item.newPrice}</p>
               </div>
 
               {/* Buttons */}
@@ -128,7 +128,10 @@ const AboutEspezo = ({ onBuyNow }) => {
                     e.stopPropagation();
                     onBuyNow && onBuyNow(item);
                   }}
-                  className="w-1/2 bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition cursor-pointer"
+                  className="w-1/2 text-white py-2 rounded-lg font-semibold transition cursor-pointer"
+                  style={{backgroundColor: '#898383'}}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
                 >
                   Buy Now
                 </button>
@@ -139,7 +142,10 @@ const AboutEspezo = ({ onBuyNow }) => {
                     e.stopPropagation();
                     addToCart(item);
                   }}
-                  className="w-1/2 bg-black text-white py-2 rounded-lg font-semibold border border-gray-700 hover:bg-gray-900 transition cursor-pointer"
+                  className="w-1/2 text-white py-2 rounded-lg font-semibold transition cursor-pointer"
+                  style={{backgroundColor: '#862b2a'}}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                 >
                   Add to Cart
                 </button>

@@ -7,7 +7,7 @@ const RefundPolicyPage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-12 px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-orange-500">Refund Policy</h1>
+        <h1 className="text-4xl font-bold text-center mb-8" style={{color: '#862b2a'}}>Refund Policy</h1>
         
         <div className="space-y-6">
           <section>
@@ -16,7 +16,7 @@ const RefundPolicyPage = () => {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Payments</h2>
-            <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} mb-4`}>ESPEZO accepts payments through secure and trusted payment gateways. Available payment methods may include:</p>
+            <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} mb-4`}>ESPEJO accepts payments through secure and trusted payment gateways. Available payment methods may include:</p>
             <ul className={`${isDark ? 'text-gray-300' : 'text-gray-700'} space-y-2 list-disc pl-6`}>
               <li>Credit / Debit Cards</li>
               <li>Net Banking</li>
@@ -46,7 +46,7 @@ const RefundPolicyPage = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Product Return Policy</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              At ESPEZO, customer satisfaction is important to us. Returns are accepted under the following conditions.
+              At ESPEJO, customer satisfaction is important to us. Returns are accepted under the following conditions.
             </p>
           </section>
 
@@ -72,7 +72,7 @@ const RefundPolicyPage = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Return Process</h2>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
-              To initiate a return, customers must contact ESPEZO customer support with order details and supporting images. Upon approval, return instructions will be shared.
+              To initiate a return, customers must contact Espejo customer support with order details and supporting images. Upon approval, return instructions will be shared.
             </p>
           </section>
 

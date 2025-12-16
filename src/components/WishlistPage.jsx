@@ -42,7 +42,7 @@ const WishlistPage = ({ onBuyNow }) => {
             <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-4`}>Your wishlist is empty</p>
             <button 
               onClick={() => navigate('/')}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
+              className="bg-[#862b2a] hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
             >
               Continue Shopping
             </button>
@@ -88,7 +88,10 @@ const WishlistPage = ({ onBuyNow }) => {
                   <div className="flex gap-2">
                     <button 
                       onClick={() => onBuyNow && onBuyNow(item)}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-semibold transition-colors text-sm"
+                      className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm"
+                      style={{backgroundColor: '#898383'}}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#898383'}
                     >
                       Buy Now
                     </button>
@@ -98,7 +101,10 @@ const WishlistPage = ({ onBuyNow }) => {
                         removeFromWishlist(item.id);
                         toast.success('🛍️ Item moved to cart!');
                       }}
-                      className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2 rounded font-semibold border border-gray-600 transition-colors text-sm flex items-center justify-center gap-2"
+                      className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2"
+                      style={{backgroundColor: '#862b2a'}}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
                     >
                       <FaShoppingCart size={12} /> Add to Cart
                     </button>

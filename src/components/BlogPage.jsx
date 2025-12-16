@@ -31,15 +31,15 @@ const BlogPage = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} py-12 px-6`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-orange-500">ESPEZO Blog</h1>
+        <h1 className="text-4xl font-bold text-center mb-8 text-[#862b2a]">Espejo Blog</h1>
         
         <div className="space-y-8">
           {blogPosts.map((post) => (
             <article key={post.id} className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} p-6 rounded-lg`}>
-              <h2 className="text-2xl font-semibold mb-2 text-orange-500">{post.title}</h2>
+              <h2 className="text-2xl font-semibold mb-2 text-[#862b2a]">{post.title}</h2>
               <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm mb-4`}>{post.date}</p>
               <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} mb-4`}>{post.excerpt}</p>
-              <button className="text-orange-500 hover:text-orange-400 font-semibold transition-colors">
+              <button className="text-[#862b2a] hover:text-[#862b2a] font-semibold transition-colors">
                 Read More →
               </button>
             </article>
