@@ -53,10 +53,10 @@ const AboutEspezo = ({ onBuyNow }) => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`p-4 ${isDark ? 'bg-black' : 'bg-white'} transition-colors duration-200`}>
+    <div className={`p-4 ${isDark ? 'bg-black' : 'bg-white'}  transition-colors duration-200`}>
            <br />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data.map((item, i) => (
           <div
             key={item.id}

@@ -4,7 +4,7 @@ import Slider from './Slider.jsx';
 import Company from './Company.jsx';
 import Card from './Card.jsx';
 import BestSeller from './BestSeller.jsx';
-import AboutEspezo from './AboutEspezo.jsx';
+// import AboutEspezo from './AboutEspezo.jsx';
 import FeaturesSection from './FeaturesSection.jsx';
 
 const HomePage = ({ onBuyNow }) => {
@@ -19,8 +19,8 @@ const HomePage = ({ onBuyNow }) => {
       <hr className={`w-[95%] border border-2 mx-auto ${isDark ? 'border-gray-500' : 'border-gray-300'}`} />
       <BestSeller onBuyNow={onBuyNow} />
       <hr className={`w-[95%] border border-2 mx-auto ${isDark ? 'border-gray-500' : 'border-gray-300'}`} />
-      <AboutEspezo onBuyNow={onBuyNow} />
-      <hr className={`w-[95%] border border-2 mx-auto ${isDark ? 'border-gray-500' : 'border-gray-300'}`} />
+      {/* <AboutEspezo onBuyNow={onBuyNow} /> */}
+      {/* <hr className={`w-[95%] border border-2 mx-auto ${isDark ? 'border-gray-500' : 'border-gray-300'}`} /> */}
       <FeaturesSection />
       <hr className={`w-[95%] border border-2 mx-auto ${isDark ? 'border-gray-500' : 'border-gray-300'}`} />
     </div>

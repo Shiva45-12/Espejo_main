@@ -4,27 +4,61 @@ import { toast } from 'react-toastify';
 
 const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
+    phone: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    dateOfBirth: '',
+    gender: ''
   });
   const { login, register } = useAuth();
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      login({ email: formData.email, name: formData.email.split('@')[0] });
-      toast.success('Login successful! Welcome back!');
-    } else {
-      register({ email: formData.email, name: formData.name });
-      toast.success('Registration successful! Welcome to Espezo!');
+    setLoading(true);
+    
+    try {
+      if (isLogin) {
+        const result = await login(formData.email, formData.password);
+        
+        if (result.success) {
+          onLoginSuccess();
+          onClose();
+        }
+      } else {
+        // Validate passwords match
+        if (formData.password !== formData.confirmPassword) {
+          toast.error('Passwords do not match!');
+          return;
+        }
+        
+        const result = await register(formData);
+        
+        if (result.success) {
+          setIsLogin(true); // Switch to login form
+          setFormData({ 
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            password: '',
+            confirmPassword: '',
+            dateOfBirth: '',
+            gender: ''
+          });
+        }
+      }
+    } catch (error) {
+      console.error('🚨 Auth error:', error);
+    } finally {
+      setLoading(false);
     }
-    onLoginSuccess();
-    onClose();
   };
 
   const handleChange = (e) => {
@@ -39,21 +73,83 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
           <button onClick={onClose} className="text-2xl">&times;</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-96 overflow-y-auto">
           {!isLogin && (
-            <div>
-              <label className="block text-sm font-medium mb-1">Full Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
-                onFocus={(e) => e.target.style.borderColor = '#862b2a'}
-                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
-                required
-              />
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                    onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                    onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                  onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                  placeholder="9876543210"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Date of Birth</label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                  onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  onFocus={(e) => e.target.style.borderColor = '#862b2a'}
+                  onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </>
           )}
 
           <div>
@@ -102,12 +198,23 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
           <button
             type="submit"
-            className="w-full text-white py-2 rounded-lg font-semibold transition-colors"
-            style={{backgroundColor: '#862b2a'}}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#862b2a'}
+            disabled={loading}
+            className="w-full text-white py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{backgroundColor: loading ? '#6b1f1e' : '#862b2a'}}
+            onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#6b1f1e')}
+            onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#862b2a')}
           >
-            {isLogin ? 'Login' : 'Register'}
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {isLogin ? 'Logging in...' : 'Registering...'}
+              </span>
+            ) : (
+              isLogin ? 'Login' : 'Register'
+            )}
           </button>
         </form>
 

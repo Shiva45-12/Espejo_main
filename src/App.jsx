@@ -14,6 +14,8 @@ import PrivacyPolicyPage from './components/PrivacyPolicyPage.jsx'
 import RefundPolicyPage from './components/RefundPolicyPage.jsx'
 import TermsOfServicePage from './components/TermsOfServicePage.jsx'
 import ProductCategoryPage from './components/ProductCategoryPage.jsx'
+import CategoryPage from './components/CategoryPage.jsx'
+import CategoriesPage from './components/CategoriesPage.jsx'
 import BecomeDealerPage from './components/BecomeDealerPage.jsx'
 import SitemapPage from './components/SitemapPage.jsx'
 import BlogPage from './components/BlogPage.jsx'
@@ -27,11 +29,14 @@ import CartPage from './components/CartPage.jsx'
 import CheckoutPage from './components/CheckoutPage.jsx'
 import AuthModal from './components/AuthModal.jsx'
 import ScrollToTopButton from './components/ScrollToTop.jsx'
+import CustomLoader from './components/CustomLoader.jsx'
+import PageLoader from './components/PageLoader.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { OrderProvider } from './context/OrderContext.jsx'
 import { WishlistProvider } from './context/WishlistContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
+import { LoadingProvider, useLoading } from './context/LoadingContext.jsx'
 
 
 function ScrollToTopOnRouteChange() {
@@ -45,12 +50,27 @@ function ScrollToTopOnRouteChange() {
 }
 
 function AppContent() {
-  const [showCart, setShowCart] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
+  return (
+    <OrderProvider>
+      <WishlistProvider>
+        <CartProvider>
+          <Router>
+            <LoadingProvider>
+              <MainContent />
+            </LoadingProvider>
+          </Router>
+        </CartProvider>
+      </WishlistProvider>
+    </OrderProvider>
+  );
+};
+
+function MainContent() {
   const [showAuth, setShowAuth] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [pendingCheckout, setPendingCheckout] = useState(null);
   const { isLoggedIn } = useAuth();
+  const { isLoading } = useLoading();
 
   const handleBuyNow = (item) => {
     setSelectedItem(item);
@@ -70,64 +90,62 @@ function AppContent() {
   };
 
   return (
-    <OrderProvider>
-      <WishlistProvider>
-        <CartProvider>
-        <Router>
-          <ScrollToTopOnRouteChange />
-          <Header onUserClick={() => setShowAuth(true)} />
-          
-          <Routes>
-            <Route path="/" element={<HomePage onBuyNow={handleBuyNow} />} />
-            <Route path="/bestseller" element={<BestSellerPage onBuyNow={handleBuyNow} />} />
-            <Route path="/metal-mirror" element={<MetalMirrorPage onBuyNow={handleBuyNow} />} />
-            <Route path="/about" element={<AboutUsPage onBuyNow={handleBuyNow} />} />
-            <Route path="/contact" element={<ContactUsPage />} />
-            <Route path="/company-profile" element={<CompanyProfilePage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/refund-policy" element={<RefundPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/products/:category" element={<ProductCategoryPage />} />
-            <Route path="/become-dealer" element={<BecomeDealerPage />} />
-            <Route path="/sitemap" element={<SitemapPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/why-choose-espezo" element={<WhyChooseEspezoPage />} />
-            <Route path="/return-policy" element={<ReturnPolicyPage />} />
-            <Route path="/search" element={<SearchPage onBuyNow={handleBuyNow} />} />
-            <Route path="/wishlist" element={<WishlistPage onBuyNow={handleBuyNow} />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage selectedItem={selectedItem} />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-          
-          <Footer onLoginClick={() => setShowAuth(true)} />
-
-         
-          <ScrollToTopButton />
-          
-          <AuthModal 
-            isOpen={showAuth} 
-            onClose={() => setShowAuth(false)}
-            onLoginSuccess={handleLoginSuccess}
-          />
-          
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-          />
-        </Router>
-        </CartProvider>
-      </WishlistProvider>
-    </OrderProvider>
+    <>
+      <ScrollToTopOnRouteChange />
+      {isLoading && <PageLoader />}
+      
+      <Header onUserClick={() => setShowAuth(true)} />
+      
+      <Routes>
+        <Route path="/" element={<HomePage onBuyNow={handleBuyNow} />} />
+        <Route path="/bestseller" element={<BestSellerPage onBuyNow={handleBuyNow} />} />
+        <Route path="/metal-mirror" element={<MetalMirrorPage onBuyNow={handleBuyNow} />} />
+        <Route path="/about" element={<AboutUsPage onBuyNow={handleBuyNow} />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/company-profile" element={<CompanyProfilePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/refund-policy" element={<RefundPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/products/:category" element={<ProductCategoryPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/category/:slug" element={<CategoryPage onBuyNow={handleBuyNow} />} />
+        <Route path="/become-dealer" element={<BecomeDealerPage />} />
+        <Route path="/sitemap" element={<SitemapPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/why-choose-espezo" element={<WhyChooseEspezoPage />} />
+        <Route path="/return-policy" element={<ReturnPolicyPage />} />
+        <Route path="/search" element={<SearchPage onBuyNow={handleBuyNow} />} />
+        <Route path="/wishlist" element={<WishlistPage onBuyNow={handleBuyNow} />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      
+      <Footer onLoginClick={() => setShowAuth(true)} />
+      
+      <CustomLoader />
+      <ScrollToTopButton />
+      
+      <AuthModal 
+        isOpen={showAuth} 
+        onClose={() => setShowAuth(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+      
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </>
   );
 };
 

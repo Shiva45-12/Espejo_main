@@ -15,13 +15,13 @@ const Company = () => {
   const allLogos = [...logos, ...logos];
 
   return (
-    <div className="bg-black py-10 overflow-hidden">
+    <div className="bg-black py-6 md:py-10 overflow-hidden -mt-1">
       <div className="whitespace-nowrap flex animate-slide">
         {allLogos.map((src, index) => (
           <img
             key={index}
             src={src}
-            className="w-[120px] md:w-[160px] lg:w-[200px] mx-10 object-contain"
+            className="w-[120px] md:w-[160px] lg:w-[200px] mx-6 md:mx-10 object-contain"
             alt="company-logo"
           />
         ))}

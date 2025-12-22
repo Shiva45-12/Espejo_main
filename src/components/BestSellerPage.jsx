@@ -8,7 +8,10 @@ const BestSellerPage = ({ onBuyNow }) => {
   return (
     <div className={`${isDark ? 'bg-black' : 'bg-white'} min-h-screen transition-colors duration-200`}>
       <div className="pt-8">
-        <h1 className={`text-center text-4xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-8`}>Best Seller Products</h1>
+        <h1 className={`text-center text-4xl md:text-5xl font-bold mb-4`} style={{color: '#862b2a'}}>Best Seller Products</h1>
+        <div className="flex justify-center mb-8">
+          <div className="w-24 h-1 rounded" style={{backgroundColor: '#862b2a'}}></div>
+        </div>
         <BestSeller onBuyNow={onBuyNow} />
       </div>
     </div>

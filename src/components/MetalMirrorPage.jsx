@@ -86,7 +86,10 @@ const MetalMirrorPage = ({ onBuyNow }) => {
     <div className={`${isDark ? 'bg-black' : 'bg-white'} min-h-screen transition-colors duration-200`}>
       {/* Hero Section */}
       <div className="pt-8 pb-16 text-center">
-        <h1 className={`text-5xl font-bold ${isDark ? 'text-white' : 'text-black'} mb-4`}>Metal Mirror Collection</h1>
+        <h1 className={`text-4xl md:text-5xl font-bold mb-4`} style={{color: '#862b2a'}}>Metal Mirror Collection</h1>
+        <div className="flex justify-center mb-6">
+          <div className="w-24 h-1 rounded" style={{backgroundColor: '#862b2a'}}></div>
+        </div>
         <p className={`text-xl ${isDark ? 'text-gray-300' : 'text-gray-600'} max-w-3xl mx-auto px-6`}>
           Discover our exquisite range of metal-framed mirrors that combine durability with elegant design. 
           Perfect for adding a touch of sophistication to any space.

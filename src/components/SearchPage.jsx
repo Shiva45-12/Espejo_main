@@ -78,9 +78,9 @@ const SearchPage = ({ onBuyNow }) => {
             <p className={`${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Try searching for: LED Mirror, Metal Mirror, Standing Mirror, Cabinet</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className={`${searchResults.length > 4 ? 'flex overflow-x-auto gap-8 pb-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'}`} style={searchResults.length > 4 ? {scrollbarWidth: 'none', msOverflowStyle: 'none'} : {}} onScroll={(e) => e.target.style.setProperty('--webkit-scrollbar', 'none')}>
             {searchResults.map((product) => (
-              <div key={product.id} className={`${isDark ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg overflow-hidden transition-colors`}>
+              <div key={product.id} className={`${isDark ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg overflow-hidden transition-colors ${searchResults.length > 4 ? 'min-w-[350px] flex-shrink-0' : ''}`}>
                 <div className="relative">
                   {product.video ? (
                     <video

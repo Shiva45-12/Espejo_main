@@ -26,10 +26,13 @@ const Cart = ({ isOpen, onClose }) => {
             <div className="p-4">
               {cartItems.map((item) => (
                 <div key={item.id} className="flex gap-4 mb-4 p-4 border rounded-lg">
-                  <video
-                    src={item.video}
+                  <img
+                    src={item.img || item.image || 'https://via.placeholder.com/80x80?text=No+Image'}
                     className="w-20 h-20 object-cover rounded"
-                    muted
+                    alt={item.title || item.name || 'Product'}
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                    }}
                   />
                   <div className="flex-1">
                     <h3 className="font-semibold text-sm">{item.title}</h3>

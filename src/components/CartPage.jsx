@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useOrder } from "../context/OrderContext";
 import { useTheme } from "../context/ThemeContext";
-import { FaPlus, FaMinus, FaTrash, FaArrowLeft } from "react-icons/fa";
+import { FaPlus, FaMinus, FaTrash, FaArrowLeft, FaEye } from "react-icons/fa";
+import Swal from 'sweetalert2';
+import ProductModal from "./ProductModal";
 
 const CartPage = () => {
   const [activeTab, setActiveTab] = useState("cart");
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { isDark } = useTheme();
   const { cartItems, removeFromCart, updateQuantity, getTotalPrice } =
@@ -50,6 +54,31 @@ const CartPage = () => {
           >
             Orders ({orders.length})
           </button>
+          
+          {activeTab === "orders" && orders.length > 0 && (
+            <button
+              onClick={async () => {
+                const result = await Swal.fire({
+                  title: 'Clear Order History?',
+                  text: 'Are you sure you want to clear all order history?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#ef4444',
+                  cancelButtonColor: '#6b7280',
+                  confirmButtonText: 'Yes, clear all',
+                  cancelButtonText: 'Cancel'
+                });
+                
+                if (result.isConfirmed) {
+                  alert('Order history cleared!');
+                  Swal.fire('Cleared!', 'Order history cleared successfully', 'success');
+                }
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm"
+            >
+              <FaTrash size={12} /> Clear
+            </button>
+          )}
         </div>
 
         {/* ========== CART SECTION ========== */}
@@ -67,23 +96,15 @@ const CartPage = () => {
                     key={item.id}
                     className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} rounded-lg p-4 md:p-6 flex flex-col lg:flex-row gap-6 border ${isDark ? 'border-gray-700' : 'border-gray-300'}`}
                   >
-                    {/* IMAGE */}
                     <div className="w-full h-48 md:h-56 lg:w-48 lg:h-48 flex-shrink-0">
-                      {item.video ? (
-                        <video
-                          src={item.video}
-                          className="w-full h-full object-cover rounded-lg"
-                          autoPlay
-                          loop
-                          muted
-                        />
-                      ) : (
-                        <img
-                          src={item.img || item.image}
-                          className="w-full h-full object-cover rounded-lg"
-                          alt={item.title || item.name || 'Product'}
-                        />
-                      )}
+                      <img
+                        src={item.img || item.image || 'https://via.placeholder.com/300x300?text=No+Image'}
+                        className="w-full h-full object-cover rounded-lg"
+                        alt={item.title || item.name || 'Product'}
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
+                        }}
+                      />
                     </div>
 
                     {/* DETAILS */}
@@ -92,24 +113,24 @@ const CartPage = () => {
                         {item.title || item.name || 'Product'}
                       </h3>
 
-                      <p className="text-xl md:text-2xl font-bold text-orange-500 mb-4">
-                        {item.price}
+                      <p className="text-xl md:text-2xl font-bold mb-4" style={{color: '#862b2a'}}>
+                        {item.price || item.newPrice || '₹0'}
                       </p>
 
                       {/* QUANTITY */}
-                      <div className="flex items-center gap-4 mb-4">
-                        <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Quantity:</span>
-                        <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4 mb-6">
+                        <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'} font-medium`}>Quantity:</span>
+                        <div className="flex items-center gap-2">
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className={`${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-black'} p-2 rounded`}
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-black'} hover:scale-105`}
                           >
-                            <FaMinus />
+                            <FaMinus size={14} />
                           </button>
 
-                          <span className={`px-4 py-2 ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'} rounded text-lg font-semibold`}>
+                          <span className={`w-16 h-10 flex items-center justify-center rounded-lg text-lg font-bold ${isDark ? 'bg-gray-800 text-white border border-gray-600' : 'bg-white text-black border border-gray-300'}`}>
                             {item.quantity}
                           </span>
 
@@ -117,40 +138,51 @@ const CartPage = () => {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className={`${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-black'} p-2 rounded`}
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-black'} hover:scale-105`}
                           >
-                            <FaPlus />
+                            <FaPlus size={14} />
                           </button>
                         </div>
                       </div>
 
-                      {/* PRODUCT INFO */}
-                      <div className={`space-y-1 ${isDark ? 'text-gray-300' : 'text-gray-600'} mb-4 text-sm md:text-base`}>
-                        <p>
-                          <span className="font-semibold">Brand:</span>{" "}
-                          GLAZONOID
-                        </p>
-                        <p>
-                          <span className="font-semibold">Warranty:</span> 5
-                          Years
-                        </p>
-                        <p>
-                          <span className="font-semibold">Material:</span>{" "}
-                          Premium Glass
-                        </p>
-                        <p>
-                          <span className="font-semibold">Features:</span> LED
-                          Backlit, Touch Sensor
-                        </p>
+                      {/* PRODUCT INFO - 2x2 Grid */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} p-3 rounded-lg border`}>
+                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Brand</p>
+                          <p className="font-semibold text-sm" style={{color: '#862b2a'}}>ESPEJO</p>
+                        </div>
+                        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} p-3 rounded-lg border`}>
+                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Warranty</p>
+                          <p className="font-semibold text-sm" style={{color: '#862b2a'}}>5 Years</p>
+                        </div>
+                        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} p-3 rounded-lg border`}>
+                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Material</p>
+                          <p className="font-semibold text-sm" style={{color: '#862b2a'}}>Premium Glass</p>
+                        </div>
+                        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} p-3 rounded-lg border`}>
+                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Features</p>
+                          <p className="font-semibold text-sm" style={{color: '#862b2a'}}>LED Backlit</p>
+                        </div>
                       </div>
 
-                      {/* REMOVE BUTTON */}
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded flex items-center gap-2"
-                      >
-                        <FaTrash /> Remove
-                      </button>
+                      {/* ACTION BUTTONS */}
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(item);
+                            setIsModalOpen(true);
+                          }}
+                          className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg flex items-center justify-center gap-2 ${isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+                        >
+                          <FaEye size={14} /> View Details
+                        </button>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition-all duration-200 hover:scale-105 shadow-lg"
+                        >
+                          <FaTrash size={14} /> Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -164,21 +196,24 @@ const CartPage = () => {
 
                 <div className="space-y-4 mb-6 text-sm md:text-base">
                   {cartItems.map((item) => {
-                    const numericPrice = parseFloat(
-                      item.price.replace("₹", "").replace(",", "")
-                    );
+                    // Handle different price formats safely
+                    let numericPrice = 0;
+                    const priceStr = item.price || item.newPrice || '0';
+                    
+                    if (typeof priceStr === 'string') {
+                      numericPrice = parseFloat(priceStr.replace(/[₹,]/g, '')) || 0;
+                    } else if (typeof priceStr === 'number') {
+                      numericPrice = priceStr;
+                    }
 
                     return (
                       <div key={item.id} className="flex justify-between">
                         <span className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                          {(item.title || item.name || 'Product').substring(0, 18)}... ×{item.quantity}
+                          {String(item.title || item.name || 'Product').substring(0, 18)}... ×{item.quantity}
                         </span>
 
                         <span>
-                          ₹
-                          {(
-                            numericPrice * item.quantity
-                          ).toLocaleString()}
+                          ₹{(numericPrice * item.quantity).toLocaleString()}
                         </span>
                       </div>
                     );
@@ -293,6 +328,19 @@ const CartPage = () => {
           )
         )}
       </div>
+      
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        onBuyNow={(product) => {
+          setIsModalOpen(false);
+          navigate('/checkout');
+        }}
+      />
     </div>
   );
 };
