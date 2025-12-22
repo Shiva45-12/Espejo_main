@@ -89,7 +89,7 @@ const AddressCard = ({ address, onDelete, onUpdate, isDark }) => {
               <p className="text-gray-400">{address.country}</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => setIsEditing(true)} className="bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-lg">
+              <button onClick={() => setIsEditing(true)} className="bg-[#a76665] hover:bg-[#8f5654] text-white p-2 rounded-lg">
                 <FaEdit />
               </button>
               <button onClick={async () => {
@@ -306,7 +306,7 @@ const ProfilePage = () => {
 
         {/* HEADER */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#a76665] to-[#8f5654] bg-clip-text text-transparent">
             My Account
           </h1>
           <p className="text-gray-400 mt-2 text-lg">
@@ -322,7 +322,7 @@ const ProfilePage = () => {
               onClick={() => setActiveTab(tab)}
               className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold flex items-center gap-2 text-xs md:text-base whitespace-nowrap flex-shrink-0 ${
                 activeTab === tab
-                  ? "bg-orange-600 text-white"
+                  ? "bg-[#a76665] text-white"
                   : isDark
                     ? "bg-gray-800 text-gray-300"
                     : "bg-white text-gray-700"
@@ -357,10 +357,10 @@ const ProfilePage = () => {
                     <img
                       src={user.avatar}
                       alt="avatar"
-                      className="w-32 h-32 rounded-full object-cover border-4 border-orange-500 shadow-lg transition-transform group-hover:scale-105"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-[#a76665] shadow-lg transition-transform group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-4xl font-bold text-white shadow-lg transition-transform group-hover:scale-105">
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#a76665] to-[#8f5654] flex items-center justify-center text-4xl font-bold text-white shadow-lg transition-transform group-hover:scale-105">
                       {(formData.firstName || user?.name)?.charAt(0)?.toUpperCase() || "U"}
                     </div>
                   )}
@@ -368,7 +368,7 @@ const ProfilePage = () => {
 
                 {/* BASIC INFO */}
                 <div className="flex-1 space-y-3 text-center md:text-left">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-[#a76665] to-[#8f5654] bg-clip-text text-transparent">
                     {user?.name || `${formData.firstName} ${formData.lastName}`.trim() || "User"}
                   </h2>
                   <div className="flex items-center justify-center md:justify-start gap-2 text-gray-400">
@@ -377,7 +377,7 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    <span className="inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 font-medium">
+                    <span className="inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm bg-gradient-to-r from-[#a76665]/20 to-[#8f5654]/20 text-[#a76665] font-medium">
                       <FaUserTag className="text-xs" />
                       {user?.role || "Customer"}
                     </span>
@@ -400,7 +400,7 @@ const ProfilePage = () => {
                       : "bg-white border-gray-200"
                     } shadow-lg hover:shadow-xl transition-shadow`}
                 >
-                  <h3 className="text-xl font-semibold mb-6 text-orange-500 flex items-center gap-2">
+                  <h3 className="text-xl font-semibold mb-6 text-[#a76665] flex items-center gap-2">
                     <FaUser className="text-lg" />
                     Personal Details
                   </h3>
@@ -423,7 +423,7 @@ const ProfilePage = () => {
                             ? "bg-gray-900 border-gray-600 text-white"
                             : "bg-gray-50 border-gray-300 text-black"
                           } ${editMode
-                            ? "focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            ? "focus:ring-2 focus:ring-[#a76665] focus:border-transparent"
                             : "opacity-70 cursor-not-allowed"
                           }`}
                         placeholder="Enter your first name"
@@ -447,7 +447,7 @@ const ProfilePage = () => {
                             ? "bg-gray-900 border-gray-600 text-white"
                             : "bg-gray-50 border-gray-300 text-black"
                           } ${editMode
-                            ? "focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            ? "focus:ring-2 focus:ring-[#a76665] focus:border-transparent"
                             : "opacity-70 cursor-not-allowed"
                           }`}
                         placeholder="Enter your last name"
@@ -471,7 +471,7 @@ const ProfilePage = () => {
                             ? "bg-gray-900 border-gray-600 text-white"
                             : "bg-gray-50 border-gray-300 text-black"
                           } ${editMode
-                            ? "focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            ? "focus:ring-2 focus:ring-[#a76665] focus:border-transparent"
                             : "opacity-70 cursor-not-allowed"
                           }`}
                         placeholder="Enter your phone number"
@@ -496,7 +496,7 @@ const ProfilePage = () => {
                             ? "bg-gray-900 border-gray-600 text-white"
                             : "bg-gray-50 border-gray-300 text-black"
                           } ${editMode
-                            ? "focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            ? "focus:ring-2 focus:ring-[#a76665] focus:border-transparent"
                             : "opacity-70 cursor-not-allowed"
                           }`}
                         type="date"
@@ -520,7 +520,7 @@ const ProfilePage = () => {
                             ? "bg-gray-900 border-gray-600 text-white"
                             : "bg-gray-50 border-gray-300 text-black"
                           } ${editMode
-                            ? "focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            ? "focus:ring-2 focus:ring-[#a76665] focus:border-transparent"
                             : "opacity-70 cursor-not-allowed"
                           }`}
                       >
@@ -539,7 +539,7 @@ const ProfilePage = () => {
                       : "bg-white border-gray-200"
                     } shadow-lg hover:shadow-xl transition-shadow`}
                 >
-                  <h3 className="text-xl font-semibold mb-6 text-orange-500 flex items-center gap-2">
+                  <h3 className="text-xl font-semibold mb-6 text-[#a76665] flex items-center gap-2">
                     <FaUserTag className="text-lg" />
                     Preferences & Settings
                   </h3>
@@ -567,7 +567,7 @@ const ProfilePage = () => {
                           }
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#a76665]/30 dark:peer-focus:ring-[#a76665]/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#a76665]"></div>
                       </label>
                     </div>
 
@@ -593,7 +593,7 @@ const ProfilePage = () => {
                           }
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#a76665]/30 dark:peer-focus:ring-[#a76665]/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#a76665]"></div>
                       </label>
                     </div>
 
@@ -640,7 +640,7 @@ const ProfilePage = () => {
                 ) : (
                   <button
                     onClick={() => setEditMode(true)}
-                    className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-4 md:px-8 py-3 md:py-4 rounded-xl flex items-center gap-2 md:gap-3 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-sm md:text-base"
+                    className="bg-gradient-to-r from-[#a76665] to-[#8f5654] hover:from-[#8f5654] hover:to-[#7d4b4a] text-white px-4 md:px-8 py-3 md:py-4 rounded-xl flex items-center gap-2 md:gap-3 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-sm md:text-base"
                   >
                     <FaEdit className="text-sm md:text-lg" /> Edit Profile
                   </button>
@@ -694,13 +694,13 @@ const ProfilePage = () => {
           {activeTab === "addresses" && (
             <div>
               <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <FaMapMarkerAlt className="text-orange-500" />
+                <FaMapMarkerAlt className="text-[#a76665]" />
                 My Addresses
               </h2>
 
               {addressLoading && (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a76665]"></div>
                   <span className="ml-3 text-gray-400">Loading addresses...</span>
                 </div>
               )}
@@ -732,7 +732,7 @@ const ProfilePage = () => {
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
-                  <FaBoxOpen className="text-orange-500" />
+                  <FaBoxOpen className="text-[#a76665]" />
                   My Orders
                 </h2>
                 {orders.length > 0 && (
@@ -763,7 +763,7 @@ const ProfilePage = () => {
 
               {loading && (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a76665]"></div>
                   <span className="ml-3 text-gray-400">Loading orders...</span>
                 </div>
               )}
@@ -801,14 +801,14 @@ const ProfilePage = () => {
                       <span className={`px-4 py-2 rounded-full text-sm font-medium ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
                           order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
                             order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
-                              'bg-orange-100 text-orange-700'
+                              'bg-[#a76665]/20 text-[#a76665]'
                         }`}>
                         {order.status}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <p className="text-xl font-bold text-orange-500">
+                      <p className="text-xl font-bold text-[#a76665]">
                         Total: ₹{order.totalAmount || order.total || '0'}
                       </p>
 

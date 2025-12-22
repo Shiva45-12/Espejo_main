@@ -19,6 +19,7 @@ import CategoriesPage from './components/CategoriesPage.jsx'
 import BecomeDealerPage from './components/BecomeDealerPage.jsx'
 import SitemapPage from './components/SitemapPage.jsx'
 import BlogPage from './components/BlogPage.jsx'
+import BlogDetailPage from './components/BlogDetailPage.jsx'
 import WhyChooseEspezoPage from './components/WhyChooseEspezoPage.jsx'
 import ReturnPolicyPage from './components/ReturnPolicyPage.jsx'
 import SearchPage from './components/SearchPage.jsx'
@@ -31,7 +32,7 @@ import AuthModal from './components/AuthModal.jsx'
 import ScrollToTopButton from './components/ScrollToTop.jsx'
 import CustomLoader from './components/CustomLoader.jsx'
 import PageLoader from './components/PageLoader.jsx'
-import { CartProvider } from './context/CartContext.jsx'
+import { CartProvider, useCart } from './context/CartContext.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { OrderProvider } from './context/OrderContext.jsx'
 import { WishlistProvider } from './context/WishlistContext.jsx'
@@ -71,10 +72,14 @@ function MainContent() {
   const [pendingCheckout, setPendingCheckout] = useState(null);
   const { isLoggedIn } = useAuth();
   const { isLoading } = useLoading();
+  const { addToCart } = useCart();
 
-  const handleBuyNow = (item) => {
+  const handleBuyNow = async (item) => {
     setSelectedItem(item);
+    
     if (isLoggedIn) {
+      // Add item to cart first, then redirect to checkout
+      await addToCart(item);
       window.location.href = '/checkout';
     } else {
       setPendingCheckout(item);
@@ -82,8 +87,10 @@ function MainContent() {
     }
   };
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = async () => {
     if (pendingCheckout) {
+      // Add item to cart after login, then redirect to checkout
+      await addToCart(pendingCheckout);
       window.location.href = '/checkout';
       setPendingCheckout(null);
     }
@@ -112,6 +119,7 @@ function MainContent() {
         <Route path="/become-dealer" element={<BecomeDealerPage />} />
         <Route path="/sitemap" element={<SitemapPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/why-choose-espezo" element={<WhyChooseEspezoPage />} />
         <Route path="/return-policy" element={<ReturnPolicyPage />} />
         <Route path="/search" element={<SearchPage onBuyNow={handleBuyNow} />} />

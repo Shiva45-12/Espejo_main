@@ -64,6 +64,7 @@ const Header = ({ onUserClick }) => {
     { name: "Home", path: "/" },
     { name: "BestSeller", path: "/bestseller" },
     { name: "Metal Mirror", path: "/metal-mirror" },
+    { name: "Blog", path: "/blog" },
     { name: "About Us", path: "/about" },
     { name: "Contact Us", path: "/contact" },
   ];
@@ -158,7 +159,7 @@ const Header = ({ onUserClick }) => {
               className="w-8 h-8 bg-[#862b2a] text-white rounded-full flex items-center justify-center cursor-pointer font-bold"
               onClick={() => navigate("/profile")}
             >
-              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              {(user?.name || user?.firstName || user?.email)?.charAt(0)?.toUpperCase() || "U"}
             </div>
           ) : (
             <FaUser className="cursor-pointer" onClick={onUserClick} />
