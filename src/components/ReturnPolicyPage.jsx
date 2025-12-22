@@ -218,18 +218,31 @@ const ReturnPolicyPage = () => {
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} text-center text-lg mb-8`}>
               Our customer support team is ready to help you with your return request.
             </p>
-            <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} p-6 rounded-lg shadow-lg border-l-4`} style={{borderColor: '#862b2a'}}>
-              <h3 className="text-xl font-bold mb-4 text-center" style={{color: '#862b2a'}}>Espejo Customer Support</h3>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <div className="flex items-center justify-center">
-                  <span className="font-semibold mr-2">📧 Email:</span>
-                  <a href="mailto:returns@espejo.in" className="text-blue-600 hover:text-blue-800 underline cursor-pointer transition-colors">returns@espejo.in</a>
-                  <span className="mx-2">|</span>
-                  <a href="mailto:support@espejo.in" className="text-blue-600 hover:text-blue-800 underline cursor-pointer transition-colors">support@espejo.in</a>
+            <div className={`${isDark ? 'bg-gray-800' : 'bg-white'} p-4 sm:p-6 rounded-lg shadow-lg border-l-4`} style={{borderColor: '#862b2a'}}>
+              <h3 className="text-lg sm:text-xl font-bold mb-4 text-center" style={{color: '#862b2a'}}>Espejo Customer Support</h3>
+              <div className="space-y-4">
+                <div className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <p className="font-semibold mb-2 flex items-center justify-center sm:justify-start">
+                    <span className="mr-2">📧</span>
+                    <span>Email:</span>
+                  </p>
+                  <div className="text-center sm:text-left space-y-1">
+                    <p>
+                      <a href="mailto:returns@espejo.in" className="text-blue-600 hover:text-blue-800 underline cursor-pointer transition-colors break-all">returns@espejo.in</a>
+                    </p>
+                    <p>
+                      <a href="mailto:support@espejo.in" className="text-blue-600 hover:text-blue-800 underline cursor-pointer transition-colors break-all">support@espejo.in</a>
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <span className="font-semibold mr-2">📱 Phone:</span>
-                  <a href="tel:+919687444002" className="text-green-600 hover:text-green-800 underline cursor-pointer transition-colors font-semibold">+91 96874 44002</a>
+                <div className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <p className="font-semibold mb-2 flex items-center justify-center sm:justify-start">
+                    <span className="mr-2">📱</span>
+                    <span>Phone:</span>
+                  </p>
+                  <div className="text-center sm:text-left">
+                    <a href="tel:+919687444002" className="text-green-600 hover:text-green-800 underline cursor-pointer transition-colors font-semibold">+91 96874 44002</a>
+                  </div>
                 </div>
               </div>
               <div className="text-center mt-4">

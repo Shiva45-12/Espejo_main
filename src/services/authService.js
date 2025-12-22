@@ -4,7 +4,7 @@ const API_BASE = "https://glassadminpanelapi.onrender.com/api/users";
 // 📝 User Registration
 export const registerUser = async (userData) => {
   try {
-    console.log('📝 Registering user:', userData.email);
+    // console.log('📝 Registering user:', userData.email);
     
     const response = await fetch(`${API_BASE}/register`, {
       method: "POST",
@@ -15,17 +15,17 @@ export const registerUser = async (userData) => {
     });
 
     const data = await response.json();
-    console.log('📊 Register response:', { status: response.status, data });
+    // console.log('📊 Register response:', { status: response.status, data });
 
     if (response.ok) {
-      console.log('✅ Registration successful');
+      // console.log('✅ Registration successful');
       return { success: true, data };
     } else {
-      console.error('❌ Registration failed:', data);
+      // console.error('❌ Registration failed:', data);
       return { success: false, error: data.message || 'Registration failed' };
     }
   } catch (error) {
-    console.error('🚨 Registration error:', error);
+    // console.error('🚨 Registration error:', error);
     return { success: false, error: 'Network error. Please try again.' };
   }
 };
@@ -33,7 +33,7 @@ export const registerUser = async (userData) => {
 // 🔑 User Login
 export const loginUser = async (credentials) => {
   try {
-    console.log('🔑 Logging in user:', credentials.email);
+    // console.log('🔑 Logging in user:', credentials.email);
     
     const response = await fetch(`${API_BASE}/login`, {
       method: "POST",
@@ -44,24 +44,24 @@ export const loginUser = async (credentials) => {
     });
 
     const data = await response.json();
-    console.log('📊 Login response:', { status: response.status, data });
+    // console.log('📊 Login response:', { status: response.status, data });
 
     if (response.ok) {
-      console.log('✅ Login successful');
+      // console.log('✅ Login successful');
       
       // Store token in localStorage
       if (data.token) {
         localStorage.setItem('token', data.token);
-        console.log('💾 Token saved to localStorage');
+        // console.log('💾 Token saved to localStorage');
       }
       
       return { success: true, data };
     } else {
-      console.error('❌ Login failed:', data);
+      // console.error('❌ Login failed:', data);
       return { success: false, error: data.message || 'Login failed' };
     }
   } catch (error) {
-    console.error('🚨 Login error:', error);
+    // console.error('🚨 Login error:', error);
     return { success: false, error: 'Network error. Please try again.' };
   }
 };
@@ -72,11 +72,11 @@ export const getUserProfile = async () => {
     const token = localStorage.getItem('token');
     
     if (!token) {
-      console.warn('⚠️ No token found');
+      // console.warn('⚠️ No token found');
       return { success: false, error: 'No authentication token found' };
     }
 
-    console.log('👤 Fetching user profile...');
+    // console.log('👤 Fetching user profile...');
     
     const response = await fetch(`${API_BASE}/profile`, {
       method: "GET",
@@ -87,24 +87,24 @@ export const getUserProfile = async () => {
     });
 
     const data = await response.json();
-    console.log('📊 Profile response:', { status: response.status, data });
+    // console.log('📊 Profile response:', { status: response.status, data });
 
     if (response.ok) {
-      console.log('✅ Profile fetched successfully');
+      // console.log('✅ Profile fetched successfully');
       return { success: true, data };
     } else {
-      console.error('❌ Profile fetch failed:', data);
+      // console.error('❌ Profile fetch failed:', data);
       
       // Handle token expiry
       if (response.status === 401) {
-        console.warn('🔄 Token expired - clearing localStorage');
+        // console.warn('🔄 Token expired - clearing localStorage');
         localStorage.removeItem('token');
       }
       
       return { success: false, error: data.message || 'Failed to fetch profile' };
     }
   } catch (error) {
-    console.error('🚨 Profile fetch error:', error);
+    // console.error('🚨 Profile fetch error:', error);
     return { success: false, error: 'Network error. Please try again.' };
   }
 };

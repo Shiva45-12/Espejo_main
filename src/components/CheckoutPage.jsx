@@ -99,7 +99,7 @@ const CheckoutPage = () => {
         if (def) setSelectedAddressId(def._id);
       }
     } catch (err) {
-      console.error("Address fetch error", err);
+      // console.error("Address fetch error", err);
     }
   };
 
@@ -163,9 +163,9 @@ const CheckoutPage = () => {
 
   /* ================= PLACE ORDER ================= */
   const placeOrder = async () => {
-    console.log('🛒 Place Order clicked');
-    console.log('📍 Selected Address ID:', selectedAddressId);
-    console.log('📦 Available Addresses:', addresses.length);
+    // console.log('🛒 Place Order clicked');
+    // console.log('📍 Selected Address ID:', selectedAddressId);
+    // console.log('📦 Available Addresses:', addresses.length);
     
     if (!token) {
       toast.error("Please login first to place an order!");
@@ -202,7 +202,7 @@ const CheckoutPage = () => {
         notes: ""
       };
       
-      console.log('🛒 Placing order with payload:', orderPayload);
+      // console.log('🛒 Placing order with payload:', orderPayload);
 
     const response = await fetch(ORDER_API, {
       method: "POST",
@@ -214,7 +214,7 @@ const CheckoutPage = () => {
     });
 
     const data = await response.json();
-    console.log('📊 Order response:', { status: response.status, data });
+    // console.log('📊 Order response:', { status: response.status, data });
 
     if (response.ok) {
       showSuccess("🎉 Order placed successfully");
@@ -223,11 +223,11 @@ const CheckoutPage = () => {
       clearCart();
       navigate("/profile");
     } else {
-      console.error('❌ Order failed:', data);
+      // console.error('❌ Order failed:', data);
       showError(data.message || `Order failed: ${data.error || 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('🚨 Order API error:', error);
+    // console.error('🚨 Order API error:', error);
     showError("Network error. Please try again.");
   } finally {
     setLoading(false);
@@ -298,7 +298,7 @@ const CheckoutPage = () => {
                             checked={selectedAddressId === addr._id}
                             onChange={() => {
                               setSelectedAddressId(addr._id);
-                              console.log('📍 Address selected:', addr._id);
+                              // console.log('📍 Address selected:', addr._id);
                             }}
                             className="mt-1 accent-orange-500"
                           />

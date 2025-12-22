@@ -4,7 +4,8 @@ import { useWishlist } from "../context/WishlistContext";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaCheck } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
 
 const PRODUCT_API = "https://glassadminpanelapi.onrender.com/api/products";
 
@@ -16,24 +17,24 @@ const Card = ({ onBuyNow }) => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [addingToCart, setAddingToCart] = useState({});
+  const [buyingNow, setBuyingNow] = useState({});
 
   const handleBuyNow = async (product) => {
-    console.log('🛒 Buy Now clicked for:', product);
+    setBuyingNow(prev => ({ ...prev, [product.id]: 'loading' }));
     
     const token = localStorage.getItem('token');
     if (!token) {
       toast.error('Please login first to place an order!');
+      setBuyingNow(prev => ({ ...prev, [product.id]: null }));
       return;
     }
     
     try {
-      // Add product to cart via API
       const addToCartPayload = {
         productId: product.id,
         quantity: 1
       };
-      
-      console.log('📦 Adding to cart via API:', addToCartPayload);
       
       const cartResponse = await fetch('https://glassadminpanelapi.onrender.com/api/cart/add', {
         method: 'POST',
@@ -45,18 +46,19 @@ const Card = ({ onBuyNow }) => {
       });
       
       if (cartResponse.ok) {
-        console.log('✅ Product added to cart successfully');
-        // Navigate to checkout immediately
-        navigate('/checkout');
+        setBuyingNow(prev => ({ ...prev, [product.id]: 'success' }));
+        setTimeout(() => {
+          navigate('/checkout');
+        }, 500);
       } else {
         const error = await cartResponse.json();
-        console.error('❌ Failed to add to cart:', error);
         toast.error('Failed to add product to cart');
+        setBuyingNow(prev => ({ ...prev, [product.id]: null }));
       }
       
     } catch (error) {
-      console.error('🚨 Buy Now error:', error);
       toast.error('Network error. Please try again.');
+      setBuyingNow(prev => ({ ...prev, [product.id]: null }));
     }
   };
 
@@ -82,7 +84,7 @@ const Card = ({ onBuyNow }) => {
           setProducts(mappedProducts);
         }
       } catch (error) {
-        console.error("Card product fetch error:", error);
+        // console.error("Card product fetch error:", error);
       } finally {
         setLoading(false);
       }
@@ -162,25 +164,41 @@ const Card = ({ onBuyNow }) => {
             {/* Buttons */}
             <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
               <button
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation();
-                  handleBuyNow(item);
+                  setBuyingNow(prev => ({ ...prev, [item.id]: 'loading' }));
+                  await handleBuyNow(item);
                 }}
-                className="text-white px-3 py-2 rounded font-semibold text-sm"
+                className="text-white px-3 py-2 rounded font-semibold text-sm flex items-center justify-center gap-2"
                 style={{ backgroundColor: "#898383" }}
+                disabled={buyingNow[item.id]}
               >
-                Buy Now
+                {buyingNow[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={12} />}
+                {buyingNow[item.id] === 'success' && <FaCheck size={12} />}
+                {!buyingNow[item.id] && 'Buy Now'}
+                {buyingNow[item.id] === 'loading' && 'Processing...'}
+                {buyingNow[item.id] === 'success' && 'Redirecting...'}
               </button>
 
               <button
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation();
-                  addToCart(item);
+                  setAddingToCart(prev => ({ ...prev, [item.id]: 'loading' }));
+                  await addToCart(item);
+                  setAddingToCart(prev => ({ ...prev, [item.id]: 'success' }));
+                  setTimeout(() => {
+                    setAddingToCart(prev => ({ ...prev, [item.id]: null }));
+                  }, 1500);
                 }}
-                className="text-white px-3 py-2 rounded font-semibold text-sm"
-                style={{ backgroundColor: "#862b2a" }}
+                className="text-white px-3 py-2 rounded font-semibold text-sm flex items-center justify-center gap-2"
+                style={{ backgroundColor: "#a76665" }}
+                disabled={addingToCart[item.id]}
               >
-                Add to Cart
+                {addingToCart[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={12} />}
+                {addingToCart[item.id] === 'success' && <FaCheck size={12} />}
+                {!addingToCart[item.id] && 'Add to Cart'}
+                {addingToCart[item.id] === 'loading' && 'Adding...'}
+                {addingToCart[item.id] === 'success' && 'Added!'}
               </button>
             </div>
           </div>

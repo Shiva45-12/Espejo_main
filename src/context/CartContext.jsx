@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    console.log('🔑 Token check:', storedToken ? 'Found' : 'Not found');
+    // console.log('🔑 Token check:', storedToken ? 'Found' : 'Not found');
     
     if (storedToken) {
       try {
@@ -25,15 +25,15 @@ export const CartProvider = ({ children }) => {
         const currentTime = Date.now() / 1000;
         
         if (payload.exp < currentTime) {
-          console.warn('⚠️ Token is EXPIRED!');
+          // console.warn('⚠️ Token is EXPIRED!');
           localStorage.removeItem('token');
           return;
         } else {
-          console.log('✅ Token is valid');
+          // console.log('✅ Token is valid');
           setToken(storedToken);
         }
       } catch (error) {
-        console.error('🚨 Token parsing error:', error);
+        // console.error('🚨 Token parsing error:', error);
         localStorage.removeItem('token');
         return;
       }
@@ -44,16 +44,16 @@ export const CartProvider = ({ children }) => {
   const loadCartFromBackend = async () => {
     try {
       if (!token) {
-        console.warn('⚠️ No token found - loading from localStorage');
+        // console.warn('⚠️ No token found - loading from localStorage');
         const savedCart = localStorage.getItem('cartItems');
         if (savedCart) {
           setCartItems(JSON.parse(savedCart));
-          console.log('📦 Cart loaded from localStorage');
+          // console.log('📦 Cart loaded from localStorage');
         }
         return;
       }
 
-      console.log('📡 Loading cart from backend...');
+      // console.log('📡 Loading cart from backend...');
       const response = await fetch(
         "https://glassadminpanelapi.onrender.com/api/cart",
         {
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
       const responseData = await response.json();
       
       if (response.ok) {
-        console.log('✅ Cart Load Success:', responseData);
+        // console.log('✅ Cart Load Success:', responseData);
         
         // Handle nested cart structure
         const cartData = responseData.cart || responseData;
@@ -77,7 +77,7 @@ export const CartProvider = ({ children }) => {
         if (cartData.items && Array.isArray(cartData.items)) {
           const formattedItems = await Promise.all(
             cartData.items.map(async (item) => {
-              console.log('🔍 Raw item:', item);
+              // console.log('🔍 Raw item:', item);
               const product = item.product || {};
               
               // If product details are missing, fetch from products API
@@ -91,10 +91,10 @@ export const CartProvider = ({ children }) => {
                   if (productRes.ok) {
                     const productData = await productRes.json();
                     fullProduct = productData.product || productData;
-                    console.log('📦 Fetched product:', fullProduct);
+                    // console.log('📦 Fetched product:', fullProduct);
                   }
                 } catch (err) {
-                  console.error('❌ Product fetch error:', err);
+                  // console.error('❌ Product fetch error:', err);
                 }
               }
               
@@ -112,12 +112,12 @@ export const CartProvider = ({ children }) => {
             })
           );
           
-          console.log('📦 Formatted items with images:', formattedItems);
+          // console.log('📦 Formatted items with images:', formattedItems);
           setCartItems(formattedItems);
           localStorage.setItem('cartItems', JSON.stringify(formattedItems));
-          console.log('🔄 Cart synced:', formattedItems.length, 'items');
+          // console.log('🔄 Cart synced:', formattedItems.length, 'items');
         } else {
-          console.log('📦 Backend cart is empty');
+          // console.log('📦 Backend cart is empty');
           setCartItems([]);
           localStorage.removeItem('cartItems');
         }
@@ -359,7 +359,7 @@ export const CartProvider = ({ children }) => {
       const responseData = await response.json();
       
       if (response.ok) {
-        console.log('✅ Update API Success:', responseData);
+        // console.log('✅ Update API Success:', responseData);
       } else {
         console.error('❌ Update API Error:', {
           status: response.status,

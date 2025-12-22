@@ -25,7 +25,7 @@ export const WishlistProvider = ({ children }) => {
         const items = JSON.parse(savedWishlist);
         setWishlistItems(Array.isArray(items) ? items : []);
       } catch (error) {
-        console.error('Error loading wishlist from localStorage:', error);
+        // console.error('Error loading wishlist from localStorage:', error);
         setWishlistItems([]);
       }
     }
@@ -53,7 +53,7 @@ export const WishlistProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      console.log('✅ Wishlist API response:', data);
+      // console.log('✅ Wishlist API response:', data);
       
       if (response.ok && data.products) {
         const formattedItems = data.products.map(product => ({
@@ -70,10 +70,10 @@ export const WishlistProvider = ({ children }) => {
         }));
         
         setWishlistItems(formattedItems);
-        console.log('📦 Wishlist items loaded:', formattedItems.length);
+        // console.log('📦 Wishlist items loaded:', formattedItems.length);
       }
     } catch (error) {
-      console.error("Wishlist fetch error:", error);
+      // console.error("Wishlist fetch error:", error);
     } finally {
       setLoading(false);
     }
@@ -119,10 +119,10 @@ export const WishlistProvider = ({ children }) => {
         });
 
         if (!response.ok) {
-          console.error('API sync failed, but item added locally');
+          // console.error('API sync failed, but item added locally');
         }
       } catch (error) {
-        console.error("API sync error:", error);
+        // console.error("API sync error:", error);
       }
     }
 
@@ -146,7 +146,7 @@ export const WishlistProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` }
         });
       } catch (error) {
-        console.error("API sync error:", error);
+        // console.error("API sync error:", error);
       }
     }
 
@@ -167,7 +167,7 @@ export const WishlistProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` }
         });
       } catch (error) {
-        console.error("API sync error:", error);
+        // console.error("API sync error:", error);
       }
     }
   };

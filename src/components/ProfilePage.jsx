@@ -190,7 +190,7 @@ const ProfilePage = () => {
         setAddresses(data.addresses || []);
       }
     } catch (error) {
-      console.error('Error fetching addresses:', error);
+      // console.error('Error fetching addresses:', error);
     }
     setAddressLoading(false);
   };
@@ -224,7 +224,7 @@ const ProfilePage = () => {
         Swal.fire('Error!', 'Failed to delete address', 'error');
       }
     } catch (error) {
-      console.error('Error deleting address:', error);
+      // console.error('Error deleting address:', error);
       Swal.fire('Error!', 'Failed to delete address', 'error');
     }
   };
@@ -250,7 +250,7 @@ const ProfilePage = () => {
         return true;
       }
     } catch (error) {
-      console.error('Error updating address:', error);
+      // console.error('Error updating address:', error);
       alert('Failed to update address');
     }
     return false;
@@ -798,10 +798,13 @@ const ProfilePage = () => {
                           })}
                         </p>
                       </div>
-                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                          order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                            order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
-                              'bg-[#a76665]/20 text-[#a76665]'
+                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${order.status === 'Delivered' ? 
+                        (isDark ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700') :
+                        order.status === 'Cancelled' ? 
+                        (isDark ? 'bg-red-800 text-red-300' : 'bg-red-100 text-red-700') :
+                        order.status === 'Processing' ? 
+                        (isDark ? 'bg-blue-800 text-blue-300' : 'bg-blue-100 text-blue-700') :
+                        (isDark ? 'bg-[#a76665]/30 text-[#a76665]' : 'bg-[#a76665]/20 text-[#a76665]')
                         }`}>
                         {order.status}
                       </span>
@@ -839,7 +842,7 @@ const ProfilePage = () => {
                             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:scale-105 active:scale-95"
                           >
                             Cancel Order
-                          </button>
+                          </button> 
                         )}
                     </div>
                   </div>

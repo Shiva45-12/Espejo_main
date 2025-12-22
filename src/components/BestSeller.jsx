@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FaStar, FaRegStar, FaHeart } from "react-icons/fa";
+import { FaStar, FaRegStar, FaHeart, FaCheck } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useTheme } from "../context/ThemeContext";
@@ -28,24 +29,24 @@ const BestSeller = ({ onBuyNow }) => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [addingToCart, setAddingToCart] = useState({});
+  const [buyingNow, setBuyingNow] = useState({});
 
   const handleBuyNow = async (product) => {
-    console.log('🛒 Buy Now clicked for:', product);
+    setBuyingNow(prev => ({ ...prev, [product.id]: 'loading' }));
     
     const token = localStorage.getItem('token');
     if (!token) {
       toast.error('Please login first to place an order!');
+      setBuyingNow(prev => ({ ...prev, [product.id]: null }));
       return;
     }
     
     try {
-      // Add product to cart via API
       const addToCartPayload = {
         productId: product.id,
         quantity: 1
       };
-      
-      console.log('📦 Adding to cart via API:', addToCartPayload);
       
       const cartResponse = await fetch('https://glassadminpanelapi.onrender.com/api/cart/add', {
         method: 'POST',
@@ -57,18 +58,19 @@ const BestSeller = ({ onBuyNow }) => {
       });
       
       if (cartResponse.ok) {
-        console.log('✅ Product added to cart successfully');
-        // Navigate to checkout immediately
-        navigate('/checkout');
+        setBuyingNow(prev => ({ ...prev, [product.id]: 'success' }));
+        setTimeout(() => {
+          navigate('/checkout');
+        }, 500);
       } else {
         const error = await cartResponse.json();
-        console.error('❌ Failed to add to cart:', error);
         toast.error('Failed to add product to cart');
+        setBuyingNow(prev => ({ ...prev, [product.id]: null }));
       }
       
     } catch (error) {
-      console.error('🚨 Buy Now error:', error);
       toast.error('Network error. Please try again.');
+      setBuyingNow(prev => ({ ...prev, [product.id]: null }));
     }
   };
 
@@ -85,7 +87,7 @@ const BestSeller = ({ onBuyNow }) => {
         }
 
         const data = await res.json();
-        console.log("API DATA 👉", data);
+        // console.log("API DATA 👉", data);
 
         if (data?.products?.length > 0) {
           const mappedProducts = data.products.map((p, index) => ({
@@ -104,7 +106,7 @@ const BestSeller = ({ onBuyNow }) => {
           setProducts(dummyData);
         }
       } catch (error) {
-        console.error("Fetch error:", error.message);
+        // console.error("Fetch error:", error.message);
         setProducts(dummyData);
       } finally {
         setLoading(false);
@@ -136,7 +138,7 @@ const BestSeller = ({ onBuyNow }) => {
         {products.map((item, index) => (
           <div
             key={item.id || index}
-            className={`rounded overflow-hidden bg-white text-black relative shadow-lg ${products.length > 4 ? 'min-w-[300px] flex-shrink-0' : ''}`}
+            className={`rounded overflow-hidden ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-black'} relative shadow-lg ${products.length > 4 ? 'min-w-[300px] flex-shrink-0' : ''}`}
           >
             {/* IMAGE */}
             <div className="relative">
@@ -149,6 +151,8 @@ const BestSeller = ({ onBuyNow }) => {
                 className={`absolute top-4 right-4 p-2 rounded-full z-10 ${
                   isInWishlist(item.id)
                     ? "bg-red-500 text-white"
+                    : isDark 
+                    ? "bg-gray-700 text-white hover:bg-red-500 hover:text-white"
                     : "bg-white text-gray-700 hover:bg-red-500 hover:text-white"
                 }`}
               >
@@ -166,13 +170,13 @@ const BestSeller = ({ onBuyNow }) => {
             </div>
 
             {/* QUICK SHOP */}
-            <div className="bg-black text-white text-center py-3 font-semibold text-sm">
+            <div className={`${isDark ? 'bg-gray-700 text-white' : 'bg-black text-white'} text-center py-3 font-semibold text-sm`}>
               QUICK SHOP
             </div>
 
             {/* DETAILS */}
             <div className="p-3">
-              <p className="text-gray-500 font-bold text-xs">ESPEJO</p>
+              <p className={`font-bold text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>ESPEJO</p>
 
               <h3 className="font-semibold mt-1 text-sm line-clamp-1">
                 {item.title}
@@ -189,17 +193,17 @@ const BestSeller = ({ onBuyNow }) => {
                     )
                   )}
                 </div>
-                <span className="text-sm">({item.reviews})</span>
+                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>({item.reviews})</span>
               </div>
 
               {/* PRICE */}
               <div className="mt-1">
                 {item.oldPrice && (
-                  <p className="text-gray-400 text-sm line-through">
+                  <p className={`text-sm line-through ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     {item.oldPrice}
                   </p>
                 )}
-                <p className="font-bold text-lg text-[#862b2a]">
+                <p className="font-bold text-lg text-[#a76665]">
                   From {item.newPrice}
                 </p>
               </div>
@@ -207,19 +211,39 @@ const BestSeller = ({ onBuyNow }) => {
               {/* BUTTONS */}
               <div className="mt-4 flex gap-3">
                 <button
-                  onClick={() => handleBuyNow(item)}
-                  className="w-1/2 text-white py-2 rounded-lg font-semibold"
+                  onClick={async () => {
+                    setBuyingNow(prev => ({ ...prev, [item.id]: 'loading' }));
+                    await handleBuyNow(item);
+                  }}
+                  className="w-1/2 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
                   style={{ backgroundColor: "#898383" }}
+                  disabled={buyingNow[item.id]}
                 >
-                  Buy Now
+                  {buyingNow[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={14} />}
+                  {buyingNow[item.id] === 'success' && <FaCheck size={14} />}
+                  {!buyingNow[item.id] && 'Buy Now'}
+                  {buyingNow[item.id] === 'loading' && 'Processing...'}
+                  {buyingNow[item.id] === 'success' && 'Redirecting...'}
                 </button>
 
                 <button
-                  onClick={() => addToCart(item)}
-                  className="w-1/2 text-white py-2 rounded-lg font-semibold"
-                  style={{ backgroundColor: "#862b2a" }}
+                  onClick={async () => {
+                    setAddingToCart(prev => ({ ...prev, [item.id]: 'loading' }));
+                    await addToCart(item);
+                    setAddingToCart(prev => ({ ...prev, [item.id]: 'success' }));
+                    setTimeout(() => {
+                      setAddingToCart(prev => ({ ...prev, [item.id]: null }));
+                    }, 1500);
+                  }}
+                  className="w-1/2 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  style={{ backgroundColor: "#a76665" }}
+                  disabled={addingToCart[item.id]}
                 >
-                  Add to Cart
+                  {addingToCart[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={14} />}
+                  {addingToCart[item.id] === 'success' && <FaCheck size={14} />}
+                  {!addingToCart[item.id] && 'Add to Cart'}
+                  {addingToCart[item.id] === 'loading' && 'Adding...'}
+                  {addingToCart[item.id] === 'success' && 'Added!'}
                 </button>
               </div>
             </div>
