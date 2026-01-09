@@ -248,7 +248,7 @@ class ProductService {
           return img?.url || img;
         })
       ].filter(Boolean),
-      inStock: product.stock > 0,
+      inStock: (product.stock || 0) > 0,
       stock: product.stock || 0,
       rating: 4.8,
       reviews: Math.floor(Math.random() * 200) + 50,

@@ -361,7 +361,7 @@ const ProductDetailPage = () => {
             <div className="flex gap-4">
               <button
                 onClick={handleBuyNow}
-                disabled={!product.inStock || buyingNow}
+                disabled={buyingNow}
                 className="flex-1 bg-[#898383] hover:bg-[#6b6161] text-white py-3 px-6 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {buyingNow ? (
@@ -376,7 +376,7 @@ const ProductDetailPage = () => {
               
               <button
                 onClick={handleAddToCart}
-                disabled={!product.inStock || addingToCart}
+                disabled={addingToCart}
                 className="flex-1 bg-[#862b2a] hover:bg-[#6b1f1e] text-white py-3 px-6 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {addingToCart ? (
