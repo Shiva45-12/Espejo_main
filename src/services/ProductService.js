@@ -57,6 +57,12 @@ class ProductService {
         throw new Error('Product not found');
       }
 
+      // DEBUG: Log the raw product from backend
+      console.log('🔍 RAW BACKEND PRODUCT:', foundProduct);
+      console.log('📸 mainImage field:', foundProduct.mainImage);
+      console.log('🖼️ galleryImages field:', foundProduct.galleryImages);
+      console.log('📷 additionalImages field:', foundProduct.additionalImages);
+
       // Map product data to consistent format
       const mappedProduct = this.mapProductData(foundProduct);
       
@@ -230,15 +236,26 @@ class ProductService {
       originalPrice: product.discountPercent ? product.price : null,
       discount: product.discountPercent || 0,
       category: product.category?.name || 'Mirror',
-      image: product.mainImage?.url || 'https://via.placeholder.com/300x300',
+      image: product.mainImage?.url || product.mainImage || 'https://via.placeholder.com/300x300',
       images: [
-        product.mainImage?.url || 'https://via.placeholder.com/600x600',
-        ...(product.additionalImages?.map(img => img.url) || [])
+        product.mainImage?.url || product.mainImage,
+        ...(product.galleryImages || []).map(img => {
+          if (typeof img === 'string') return img;
+          return img?.url || img;
+        }),
+        ...(product.additionalImages || []).map(img => {
+          if (typeof img === 'string') return img;
+          return img?.url || img;
+        })
       ].filter(Boolean),
       inStock: product.stock > 0,
       stock: product.stock || 0,
-      rating: 4.8, // Default rating
-      reviews: Math.floor(Math.random() * 200) + 50 // Random reviews count
+      rating: 4.8,
+      reviews: Math.floor(Math.random() * 200) + 50,
+      sizes: product.sizes || [],
+      colors: product.colors || [],
+      addOns: product.addOns || [],
+      about: product.about || ''
     };
 
     // Return minimal data for lists

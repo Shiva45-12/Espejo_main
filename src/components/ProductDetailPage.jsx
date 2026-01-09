@@ -37,6 +37,8 @@ const ProductDetailPage = () => {
         if (productResponse.success) {
           setProduct(productResponse.product);
           console.log('✅ Product loaded:', productResponse.product);
+          console.log('🖼️ Product images:', productResponse.product.images);
+          console.log('📊 Images count:', productResponse.product.images?.length);
         } else {
           console.error('❌ Product not found');
           setProduct(null);
@@ -165,26 +167,60 @@ const ProductDetailPage = () => {
               </button>
             </div>
             
+            {/* Image Thumbnails - Amazon/Flipkart Style */}
             {product.images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
-                      selectedImage === index 
-                        ? 'border-[#862b2a]' 
-                        : 'border-gray-200 dark:border-gray-700'
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      onError={(e) => e.target.src = 'https://via.placeholder.com/80x80'}
-                    />
-                  </button>
-                ))}
+              <div className="space-y-2">
+                <div className="grid grid-cols-4 gap-2">
+                  {product.images.slice(0, 4).map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 ${
+                        selectedImage === index 
+                          ? 'border-[#862b2a] ring-2 ring-[#862b2a]/30' 
+                          : 'border-gray-200 dark:border-gray-700 hover:border-[#862b2a]/50'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} view ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => e.target.src = 'https://via.placeholder.com/100x100'}
+                      />
+                    </button>
+                  ))}
+                </div>
+                
+                {/* More Images Indicator */}
+                {product.images.length > 4 && (
+                  <div className="flex gap-2 overflow-x-auto pb-2">
+                    {product.images.slice(4).map((image, index) => (
+                      <button
+                        key={index + 4}
+                        onClick={() => setSelectedImage(index + 4)}
+                        className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 ${
+                          selectedImage === index + 4
+                            ? 'border-[#862b2a] ring-2 ring-[#862b2a]/30' 
+                            : 'border-gray-200 dark:border-gray-700 hover:border-[#862b2a]/50'
+                        }`}
+                      >
+                        <img
+                          src={image}
+                          alt={`${product.name} view ${index + 5}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => e.target.src = 'https://via.placeholder.com/64x64'}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Image Counter */}
+                <div className="text-center">
+                  <span className="text-sm text-gray-500">
+                    {selectedImage + 1} of {product.images.length} images
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -222,6 +258,76 @@ const ProductDetailPage = () => {
                 )}
               </div>
             </div>
+
+            {/* Product Options */}
+            {(product.sizes?.length > 0 || product.colors?.length > 0) && (
+              <div className="space-y-4">
+                {/* Size Options */}
+                {product.sizes?.length > 0 && (
+                  <div>
+                    <h3 className="font-medium mb-2">Available Sizes:</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.sizes.map((size, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                        >
+                          {size}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Color Options */}
+                {product.colors?.length > 0 && (
+                  <div>
+                    <h3 className="font-medium mb-2">Available Colors:</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.colors.map((color, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                        >
+                          {color}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Add-ons */}
+            {product.addOns?.length > 0 && (
+              <div>
+                <h3 className="font-medium mb-3">Available Add-ons:</h3>
+                <div className="space-y-2">
+                  {product.addOns.map((addon, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center justify-between p-3 border rounded-lg ${
+                        addon.isDefault 
+                          ? 'border-[#862b2a] bg-[#862b2a]/5' 
+                          : 'border-gray-300 dark:border-gray-600'
+                      }`}
+                    >
+                      <div>
+                        <span className="font-medium">{addon.name}</span>
+                        {addon.isDefault && (
+                          <span className="ml-2 text-xs bg-[#862b2a] text-white px-2 py-1 rounded-full">
+                            Default
+                          </span>
+                        )}
+                      </div>
+                      <span className="font-bold text-[#862b2a]">
+                        {addon.price === 0 ? 'Free' : `+₹${addon.price}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Stock Status */}
             <div className="flex items-center gap-2">
