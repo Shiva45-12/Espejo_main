@@ -23,6 +23,8 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState('description');
   const [addingToCart, setAddingToCart] = useState(false);
   const [buyingNow, setBuyingNow] = useState(false);
+  const [showZoom, setShowZoom] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
 
   // Fetch product details
   useEffect(() => {
@@ -159,15 +161,42 @@ const ProductDetailPage = () => {
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-zoom-in"
                 onError={(e) => e.target.src = 'https://via.placeholder.com/600x600'}
+                onMouseEnter={() => setShowZoom(true)}
+                onMouseLeave={() => setShowZoom(false)}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                  setZoomPosition({ x, y });
+                }}
               />
               <button className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:scale-110 transition-transform">
                 <FaExpand />
               </button>
             </div>
             
-            {/* Image Thumbnails - Amazon/Flipkart Style */}
+            {/* Zoom Window */}
+            {showZoom && (
+              <div className="fixed top-1/2 right-8 -translate-y-1/2 w-[600px] h-[500px] bg-white dark:bg-gray-900 border-4 border-[#862b2a] rounded-xl shadow-2xl z-50 overflow-hidden">
+                <div className="w-full h-full relative">
+                  <div 
+                    className="w-full h-full bg-no-repeat transition-all duration-100 ease-out"
+                    style={{
+                      backgroundImage: `url(${product.images[selectedImage]})`,
+                      backgroundSize: '300%',
+                      backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`
+                    }}
+                  />
+                  <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium">
+                    Zoom View
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Image Thumbnails - Limited to 4 */}
             {product.images.length > 1 && (
               <div className="space-y-2">
                 <div className="grid grid-cols-4 gap-2">
@@ -191,34 +220,10 @@ const ProductDetailPage = () => {
                   ))}
                 </div>
                 
-                {/* More Images Indicator */}
-                {product.images.length > 4 && (
-                  <div className="flex gap-2 overflow-x-auto pb-2">
-                    {product.images.slice(4).map((image, index) => (
-                      <button
-                        key={index + 4}
-                        onClick={() => setSelectedImage(index + 4)}
-                        className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 hover:scale-105 ${
-                          selectedImage === index + 4
-                            ? 'border-[#862b2a] ring-2 ring-[#862b2a]/30' 
-                            : 'border-gray-200 dark:border-gray-700 hover:border-[#862b2a]/50'
-                        }`}
-                      >
-                        <img
-                          src={image}
-                          alt={`${product.name} view ${index + 5}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => e.target.src = 'https://via.placeholder.com/64x64'}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-                
                 {/* Image Counter */}
                 <div className="text-center">
                   <span className="text-sm text-gray-500">
-                    {selectedImage + 1} of {product.images.length} images
+                    {selectedImage + 1} of {Math.min(product.images.length, 4)} images
                   </span>
                 </div>
               </div>
@@ -331,10 +336,8 @@ const ProductDetailPage = () => {
 
             {/* Stock Status */}
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${product.inStock ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              <span className={`font-medium ${product.inStock ? 'text-green-600' : 'text-red-600'}`}>
-                {product.inStock ? `In Stock (${product.stock} available)` : 'Out of Stock'}
-              </span>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span className="font-medium text-green-600">In Stock</span>
             </div>
 
             {/* Quantity Selector */}

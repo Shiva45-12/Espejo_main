@@ -229,6 +229,13 @@ class ProductService {
 
   // MAP PRODUCT DATA TO CONSISTENT FORMAT
   static mapProductData(product, minimal = false) {
+    // Dynamic stock calculation based on backend data
+    const stockValue = product.stock !== undefined ? product.stock : 
+                      product.quantity !== undefined ? product.quantity :
+                      product.available !== undefined ? product.available : 50;
+    
+    const isInStock = stockValue > 0;
+    
     const baseData = {
       id: product._id,
       name: product.name,
@@ -248,8 +255,8 @@ class ProductService {
           return img?.url || img;
         })
       ].filter(Boolean),
-      inStock: (product.stock || 0) > 0,
-      stock: product.stock || 0,
+      inStock: isInStock,
+      stock: stockValue,
       rating: 4.8,
       reviews: Math.floor(Math.random() * 200) + 50,
       sizes: product.sizes || [],
