@@ -1,84 +1,119 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { FaCalendarAlt, FaUser, FaClock, FaEye, FaHeart, FaArrowLeft, FaShare } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { FaArrowLeft, FaCalendarAlt, FaUser, FaClock, FaEye, FaHeart, FaTag } from 'react-icons/fa';
+import PageLoader from './PageLoader';
+
+const BLOG_API = "https://glassadminpanelapi.onrender.com/api/blogs";
 
 const BlogDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Changed from slug to id
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [liked, setLiked] = useState(false);
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'How to Choose the Perfect Mirror for Your Bathroom',
-      date: 'January 15, 2025',
-      author: 'Espejo Team',
-      category: 'Design Tips',
-      readTime: '5 min read',
-      views: 1250,
-      likes: 89,
-      image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&h=400&fit=crop',
-      excerpt: 'Discover the key factors to consider when selecting a bathroom mirror that combines style and functionality for your perfect space.',
-      content: 'When choosing the perfect mirror for your bathroom, several factors come into play. First, consider the size of your space and the mirror proportions. A mirror should be proportional to your vanity - typically 2-4 inches narrower than the vanity width. Next, think about lighting. Mirrors with built-in LED lighting can provide excellent illumination for daily routines. The style should complement your bathroom décor, whether modern, traditional, or transitional. Finally, consider special features like anti-fog coating, magnification zones, or smart technology integration.',
-      tags: ['Bathroom', 'Design', 'Tips']
-    },
-    {
-      id: 2,
-      title: 'LED Mirrors: The Future of Modern Bathrooms',
-      date: 'January 10, 2025',
-      author: 'Design Expert',
-      category: 'Technology',
-      readTime: '7 min read',
-      views: 2100,
-      likes: 156,
-      image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=400&fit=crop',
-      excerpt: 'Explore the benefits of LED mirrors and why they are becoming essential in contemporary bathroom design and smart homes.',
-      content: 'LED mirrors represent the cutting edge of bathroom technology, combining functionality with energy efficiency. These mirrors offer superior lighting that mimics natural daylight, making them perfect for grooming tasks. The LED strips are typically positioned around the perimeter or behind the mirror, providing even, shadow-free illumination. Many models include dimming capabilities, color temperature adjustment, and even smart features like Bluetooth connectivity, touch controls, and anti-fog heating. The energy efficiency of LED technology means lower electricity bills and longer lifespan compared to traditional lighting solutions.',
-      tags: ['LED', 'Technology', 'Modern']
-    },
-    {
-      id: 3,
-      title: 'Mirror Maintenance Tips for Long-lasting Shine',
-      date: 'January 5, 2025',
-      author: 'Care Specialist',
-      category: 'Maintenance',
-      readTime: '4 min read',
-      views: 890,
-      likes: 67,
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
-      excerpt: 'Learn professional tips to keep your mirrors spotless and maintain their clarity for years to come with proper care techniques.',
-      content: 'Proper mirror maintenance is essential for preserving clarity and extending lifespan. Start with the right cleaning solution - avoid harsh chemicals that can damage the mirror backing. Instead, use a mixture of white vinegar and water or specialized mirror cleaners. Always spray the cleaner onto a microfiber cloth rather than directly onto the mirror to prevent liquid from seeping behind the glass. Clean in a circular motion, then finish with vertical strokes for a streak-free shine. For LED mirrors, ensure the electrical components are turned off and avoid getting moisture near the controls. Regular cleaning prevents buildup that can permanently damage the mirror surface.',
-      tags: ['Maintenance', 'Care', 'Tips']
-    },
-    {
-      id: 4,
-      title: 'Transform Your Space with Statement Mirrors',
-      date: 'December 28, 2024',
-      author: 'Interior Designer',
-      category: 'Design Tips',
-      readTime: '6 min read',
-      views: 1680,
-      likes: 124,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=400&fit=crop',
-      excerpt: 'Discover how statement mirrors can completely transform your living space and create stunning focal points in any room.',
-      content: 'Statement mirrors are powerful design elements that can dramatically transform any space. These oversized or uniquely shaped mirrors serve as both functional pieces and artistic focal points. In small rooms, large mirrors create the illusion of expanded space and increased natural light. Consider placement carefully - opposite windows to reflect outdoor views, or in dark corners to brighten the area. The frame style should complement your existing décor while making a bold statement. Popular options include ornate vintage frames, sleek modern designs, or geometric shapes. Remember that a statement mirror should be the star of the wall, so avoid cluttering the surrounding area with other decorative elements.',
-      tags: ['Interior', 'Statement', 'Transform']
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        console.log('🔍 Fetching blog with ID:', id);
+        const response = await fetch(`${BLOG_API}/${id}`);
+        const data = await response.json();
+        
+        console.log('📊 Blog Detail API Response:', { status: response.status, data });
+        
+        if (response.ok && data.blog) {
+          const blogData = {
+            id: data.blog._id,
+            slug: data.blog.slug,
+            title: data.blog.title,
+            content: data.blog.content,
+            shortDescription: data.blog.shortDescription,
+            coverImage: data.blog.coverImage,
+            thumbnailImage: data.blog.thumbnailImage,
+            category: data.blog.category,
+            tags: data.blog.tags || [],
+            authorName: data.blog.authorName,
+            views: data.blog.views,
+            likes: data.blog.likes,
+            readTime: data.blog.readTime,
+            publishedAt: new Date(data.blog.publishedAt || data.blog.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }),
+            metaTitle: data.blog.metaTitle,
+            metaDescription: data.blog.metaDescription
+          };
+          
+          setBlog(blogData);
+        } else {
+          toast.error('Blog not found');
+          navigate('/blog');
+        }
+      } catch (error) {
+        console.error('Blog fetch error:', error);
+        toast.error('Failed to load blog');
+        navigate('/blog');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchBlog();
     }
-  ];
+  }, [id, navigate]);
 
-  const post = blogPosts.find(p => p.id === parseInt(id));
+  const handleLike = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Please login to like blogs');
+      return;
+    }
 
-  if (!post) {
+    try {
+      const response = await fetch(`${BLOG_API}/${blog.id}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setBlog(prev => ({ ...prev, likes: data.likes }));
+        setLiked(true);
+        toast.success(data.message || 'Blog liked!');
+      } else {
+        toast.error(data.message || 'Failed to like blog');
+      }
+    } catch (error) {
+      console.error('Like error:', error);
+      toast.error('Network error');
+    }
+  };
+
+  if (loading) {
+    return <PageLoader />;
+  }
+
+  if (!blog) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-black text-white' : 'bg-white text-black'}`}>
+      <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-white' : 'bg-gray-50 text-black'} flex items-center justify-center`}>
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Blog post not found</h1>
+          <p className="text-xl mb-4">Blog not found</p>
           <button 
             onClick={() => navigate('/blog')}
-            className="px-6 py-3 bg-[#862b2a] text-white rounded-lg hover:bg-[#6d2221] transition-colors"
+            className="px-6 py-3 rounded-lg font-semibold text-white"
+            style={{backgroundColor: '#862b2a'}}
           >
-            Back to Blog
+            Back to Blogs
           </button>
         </div>
       </div>
@@ -86,87 +121,132 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-black text-white' : 'bg-white text-black'} transition-colors duration-200`}>
-      {/* Back Button */}
-      <div className="max-w-4xl mx-auto px-6 pt-8">
-        <button 
-          onClick={() => navigate('/blog')}
-          className={`flex items-center gap-2 mb-8 px-4 py-2 rounded-lg transition-colors ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}
-        >
-          <FaArrowLeft />
-          Back to Blog
-        </button>
-      </div>
-
-      {/* Hero Image */}
-      <div className="max-w-4xl mx-auto px-6 mb-8">
-        <img 
-          src={post.image} 
-          alt={post.title}
-          className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
-        />
-      </div>
-
-      {/* Article Content */}
-      <article className="max-w-4xl mx-auto px-6 pb-16">
-        {/* Category Badge */}
-        <div className="mb-6">
-          <span className="px-4 py-2 rounded-full text-sm font-semibold text-white" style={{backgroundColor: '#862b2a'}}>
-            {post.category}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h1 className={`text-3xl md:text-4xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-black'}`}>
-          {post.title}
-        </h1>
-
-        {/* Meta Information */}
-        <div className={`flex flex-wrap items-center gap-6 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-8 pb-8 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
-          <div className="flex items-center gap-2">
-            <FaUser />
-            <span>{post.author}</span>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-white' : 'bg-gray-50 text-black'} transition-colors duration-200`}>
+      {/* Header */}
+      <div className={`${isDark ? 'bg-black' : 'bg-white'} py-6 md:py-8 border-b ${isDark ? 'border-gray-800' : 'border-gray-200'}`}>
+        <div className="max-w-4xl mx-auto px-4 md:px-6">
+          <button 
+            onClick={() => navigate('/blog')}
+            className="flex items-center gap-2 mb-4 md:mb-6 hover:text-[#862b2a] transition-colors text-sm md:text-base"
+          >
+            <FaArrowLeft size={14} />
+            <span>Back to Blogs</span>
+          </button>
+          
+          <div className="mb-3 md:mb-4">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold text-white" style={{backgroundColor: '#862b2a'}}>
+              {blog.category}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <FaCalendarAlt />
-            <span>{post.date}</span>
+          
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 leading-tight" style={{color: '#862b2a'}}>
+            {blog.title}
+          </h1>
+          
+          <div className={`flex flex-wrap items-center gap-3 md:gap-6 text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-3 md:mb-4`}>
+            <div className="flex items-center gap-1 md:gap-2">
+              <FaUser size={12} />
+              <span className="truncate">{blog.authorName}</span>
+            </div>
+            <div className="flex items-center gap-1 md:gap-2">
+              <FaCalendarAlt size={12} />
+              <span className="truncate">{blog.publishedAt}</span>
+            </div>
+            <div className="flex items-center gap-1 md:gap-2">
+              <FaClock size={12} />
+              <span>{blog.readTime}</span>
+            </div>
+            <div className="flex items-center gap-1 md:gap-2">
+              <FaEye size={12} />
+              <span>{blog.views} views</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <FaClock />
-            <span>{post.readTime}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <FaEye />
-            <span>{post.views} views</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <FaHeart />
-            <span>{post.likes} likes</span>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className={`prose prose-lg max-w-none mb-8 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-          <p className="text-lg leading-relaxed">
-            {post.content}
+          
+          <p className={`text-sm md:text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'} leading-relaxed`}>
+            {blog.shortDescription}
           </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
+        {/* Cover Image */}
+        {blog.coverImage && (
+          <div className="mb-6 md:mb-8">
+            <img 
+              src={blog.coverImage} 
+              alt={blog.title}
+              className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl md:rounded-2xl shadow-lg"
+            />
+          </div>
+        )}
+
+        {/* Blog Content */}
+        <div className={`mb-6 md:mb-8`}>
+          <div 
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+            className={`${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed text-sm md:text-base
+              prose prose-sm md:prose-lg max-w-none ${isDark ? 'prose-invert' : ''}
+              prose-headings:text-[#862b2a] prose-links:text-[#862b2a] prose-strong:text-[#862b2a]
+              prose-p:mb-4 prose-headings:mb-4 prose-headings:mt-6
+              prose-img:rounded-lg prose-img:shadow-md
+              prose-blockquote:border-l-[#862b2a] prose-blockquote:bg-opacity-10
+              ${isDark ? 'prose-blockquote:bg-gray-800' : 'prose-blockquote:bg-gray-100'}
+            `}
+          />
         </div>
 
         {/* Tags */}
-        <div className="mb-8">
-          <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-black'}`}>Tags</h3>
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag, index) => (
-              <span 
-                key={index} 
-                className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
-              >
-                #{tag}
-              </span>
-            ))}
+        {blog.tags && blog.tags.length > 0 && (
+          <div className="mb-6 md:mb-8">
+            <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4" style={{color: '#862b2a'}}>Tags</h3>
+            <div className="flex flex-wrap gap-2">
+              {blog.tags.map((tag, index) => (
+                <span 
+                  key={index}
+                  className={`px-3 py-1 rounded-full text-xs md:text-sm transition-colors hover:bg-[#862b2a] hover:text-white ${
+                    isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  <FaTag size={10} className="inline mr-1" />
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
+        )}
+
+        {/* Like Button */}
+        <div className={`flex items-center justify-center py-6 md:py-8 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+          <button
+            onClick={handleLike}
+            className={`flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold transition-all transform hover:scale-105 ${
+              liked 
+                ? 'bg-red-500 text-white shadow-lg' 
+                : isDark 
+                  ? 'bg-gray-800 text-gray-300 hover:bg-red-500 hover:text-white shadow-md' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white shadow-md'
+            }`}
+          >
+            <FaHeart size={14} className={liked ? 'text-white' : ''} />
+            <span className="text-sm md:text-base">{blog.likes} Likes</span>
+          </button>
         </div>
-      </article>
+
+        {/* Back to Top Button */}
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isDark 
+                ? 'bg-gray-800 text-gray-300 hover:bg-[#862b2a] hover:text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-[#862b2a] hover:text-white'
+            }`}
+          >
+            Back to Top
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

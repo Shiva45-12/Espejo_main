@@ -24,7 +24,6 @@ const ProductCategoryPage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [sortBy, setSortBy] = useState('name');
-  const [viewMode, setViewMode] = useState('grid');
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   // 🔥 API STATES
@@ -212,14 +211,6 @@ const ProductCategoryPage = () => {
             <option value="price-low">Low to High</option>
             <option value="price-high">High to Low</option>
           </select>
-
-          <button
-            onClick={() =>
-              setViewMode(viewMode === 'grid' ? 'list' : 'grid')
-            }
-          >
-            {viewMode === 'grid' ? '☰ List' : '⊞ Grid'}
-          </button>
         </div>
 
         {/* LOADING */}
@@ -231,15 +222,15 @@ const ProductCategoryPage = () => {
 
         {/* PRODUCTS */}
         <div
-          className={`${sortedProducts.length > 4 && viewMode === 'grid' ? 'flex overflow-x-auto gap-6 pb-4' : `grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' : 'grid-cols-1'}`}`}
-          style={sortedProducts.length > 4 && viewMode === 'grid' ? {scrollbarWidth: 'none', msOverflowStyle: 'none'} : {}}
+          className={`${sortedProducts.length > 4 ? 'flex overflow-x-auto gap-6 pb-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'}`}
+          style={sortedProducts.length > 4 ? {scrollbarWidth: 'none', msOverflowStyle: 'none'} : {}}
           onScroll={(e) => e.target.style.setProperty('--webkit-scrollbar', 'none')}
         >
         
           {sortedProducts.map((product) => (
             <div
               key={product.id}
-              className={`border rounded-xl overflow-hidden shadow ${sortedProducts.length > 4 && viewMode === 'grid' ? 'min-w-[300px] flex-shrink-0' : ''}`}
+              className={`border rounded-xl overflow-hidden shadow ${sortedProducts.length > 4 ? 'min-w-[300px] flex-shrink-0' : ''}`}
             >
               <div className="relative h-56">
                 <img

@@ -6,6 +6,7 @@ import { useWishlist } from "../context/WishlistContext";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PageLoader from "./PageLoader";
 
 /* ================= DUMMY DATA (FALLBACK) ================= */
 const dummyData = [
@@ -35,41 +36,23 @@ const BestSeller = ({ onBuyNow }) => {
   const handleBuyNow = async (product) => {
     setBuyingNow(prev => ({ ...prev, [product.id]: 'loading' }));
     
-    const token = localStorage.getItem('token');
-    if (!token) {
-      toast.error('Please login first to place an order!');
-      setBuyingNow(prev => ({ ...prev, [product.id]: null }));
-      return;
-    }
-    
     try {
-      const addToCartPayload = {
-        productId: product.id,
-        quantity: 1
-      };
-      
-      const cartResponse = await fetch('https://glassadminpanelapi.onrender.com/api/cart/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(addToCartPayload)
-      });
-      
-      if (cartResponse.ok) {
-        setBuyingNow(prev => ({ ...prev, [product.id]: 'success' }));
-        setTimeout(() => {
-          navigate('/checkout');
-        }, 500);
-      } else {
-        const error = await cartResponse.json();
-        toast.error('Failed to add product to cart');
-        setBuyingNow(prev => ({ ...prev, [product.id]: null }));
-      }
+      setBuyingNow(prev => ({ ...prev, [product.id]: 'success' }));
+      setTimeout(() => {
+        navigate('/checkout', { 
+          state: { 
+            buyNowItem: {
+              id: product.id,
+              title: product.title,
+              price: product.newPrice || product.price,
+              img: product.img,
+              quantity: 1
+            }
+          }
+        });
+      }, 500);
       
     } catch (error) {
-      toast.error('Network error. Please try again.');
       setBuyingNow(prev => ({ ...prev, [product.id]: null }));
     }
   };
@@ -78,43 +61,60 @@ const BestSeller = ({ onBuyNow }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        // console.log("🔄 Starting API fetch...");
         const res = await fetch(
           "https://glassadminpanelapi.onrender.com/api/products"
         );
 
+        // console.log("📡 API Response Status:", res.status, res.statusText);
+        
         if (!res.ok) {
           throw new Error(`HTTP Error: ${res.status}`);
         }
 
         const data = await res.json();
-        // console.log("API DATA 👉", data);
+        // console.log("📊 API DATA 👉", data);
+        // console.log("📊 Products array:", data?.products);
+        // console.log("📊 Products length:", data?.products?.length);
 
         if (data?.products?.length > 0) {
-          const mappedProducts = data.products.map((p, index) => ({
-            id: p._id || `api-${index}`,
-            img: p.mainImage?.url || "https://via.placeholder.com/400",
-            title: p.name,
-            reviews: 0,
-            rating: 5,
-            oldPrice: p.discountPercent ? `₹${p.price}` : "",
-            newPrice: `₹${p.finalPrice || p.price}`,
-            price: `₹${p.finalPrice || p.price}`, 
-          }));
+          // console.log("✅ Processing products...");
+          const mappedProducts = data.products.map((p, index) => {
+            // console.log(`Product ${index}:`, p);
+            return {
+              id: p._id || `api-${index}`,
+              img: p.mainImage?.url || "https://via.placeholder.com/400",
+              title: p.name,
+              reviews: 0,
+              rating: 5,
+              oldPrice: p.discountPercent ? `₹${p.price}` : "",
+              newPrice: `₹${p.finalPrice || p.price}`,
+              price: `₹${p.finalPrice || p.price}`, 
+            };
+          });
 
+          // console.log("🎯 Mapped products:", mappedProducts);
           setProducts(mappedProducts.slice(0, 8));
         } else {
+          // console.log("❌ No products found in API response");
           setProducts(dummyData);
         }
       } catch (error) {
-        // console.error("Fetch error:", error.message);
+        // console.error("🚨 Fetch error:", error.message);
+        // console.error("🚨 Full error:", error);
         setProducts(dummyData);
       } finally {
+        // console.log("✅ Fetch completed");
         setLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
+
+  if (loading) {
+    return <PageLoader />;
+  }
 
   return (
     <div className={`p-4 ${isDark ? "bg-black" : "bg-white"}`}>
@@ -126,28 +126,26 @@ const BestSeller = ({ onBuyNow }) => {
         Best Seller
       </h1> */}
 
-      {loading && (
-        <p className="text-center text-lg py-10">Loading products...</p>
-      )}
-
       {!loading && products.length === 0 && (
         <p className="text-center py-10">No products found</p>
       )}
 
-      <div className={`${products.length > 4 ? 'flex overflow-x-auto gap-6 pb-4' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'}`} style={products.length > 4 ? {scrollbarWidth: 'none', msOverflowStyle: 'none'} : {}} onScroll={(e) => e.target.style.setProperty('--webkit-scrollbar', 'none')}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((item, index) => (
           <div
             key={item.id || index}
-            className={`rounded overflow-hidden ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-black'} relative shadow-lg ${products.length > 4 ? 'min-w-[300px] flex-shrink-0' : ''}`}
+            onClick={() => navigate(`/product/${item.id}`)}
+            className={`rounded overflow-hidden ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-black'} relative shadow-lg h-[520px] flex flex-col cursor-pointer`}
           >
             {/* IMAGE */}
             <div className="relative">
               <button
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation();
                   isInWishlist(item.id)
                     ? removeFromWishlist(item.id)
-                    : addToWishlist(item)
-                }
+                    : addToWishlist(item);
+                }}
                 className={`absolute top-4 right-4 p-2 rounded-full z-10 ${
                   isInWishlist(item.id)
                     ? "bg-red-500 text-white"
@@ -175,16 +173,16 @@ const BestSeller = ({ onBuyNow }) => {
             </div>
 
             {/* DETAILS */}
-            <div className="p-3">
+            <div className="p-3 flex-1 flex flex-col">
               <p className={`font-bold text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>ESPEJO</p>
 
-              <h3 className="font-semibold mt-1 text-sm line-clamp-1">
+              <h3 className="font-semibold mt-1 text-sm line-clamp-2 flex-1">
                 {item.title}
               </h3>
 
               {/* RATING */}
               <div className="flex items-center gap-2 mt-2">
-                <div className="flex text-yellow-400 text-lg">
+                <div className="flex text-yellow-400 text-sm">
                   {Array.from({ length: 5 }).map((_, i) =>
                     i < Math.floor(item.rating) ? (
                       <FaStar key={i} />
@@ -193,41 +191,42 @@ const BestSeller = ({ onBuyNow }) => {
                     )
                   )}
                 </div>
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>({item.reviews})</span>
+                <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>({item.reviews})</span>
               </div>
 
               {/* PRICE */}
-              <div className="mt-1">
+              <div className="mt-2">
                 {item.oldPrice && (
-                  <p className={`text-sm line-through ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <p className={`text-xs line-through ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     {item.oldPrice}
                   </p>
                 )}
-                <p className="font-bold text-lg text-[#a76665]">
+                <p className="font-bold text-base text-[#a76665]">
                   From {item.newPrice}
                 </p>
               </div>
 
               {/* BUTTONS */}
-              <div className="mt-4 flex gap-3">
+              <div className="mt-4 flex gap-2">
                 <button
-                  onClick={async () => {
-                    setBuyingNow(prev => ({ ...prev, [item.id]: 'loading' }));
-                    await handleBuyNow(item);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBuyNow(item);
                   }}
-                  className="w-1/2 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-1 text-xs"
                   style={{ backgroundColor: "#898383" }}
                   disabled={buyingNow[item.id]}
                 >
-                  {buyingNow[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={14} />}
-                  {buyingNow[item.id] === 'success' && <FaCheck size={14} />}
+                  {buyingNow[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={12} />}
+                  {buyingNow[item.id] === 'success' && <FaCheck size={12} />}
                   {!buyingNow[item.id] && 'Buy Now'}
                   {buyingNow[item.id] === 'loading' && 'Processing...'}
                   {buyingNow[item.id] === 'success' && 'Redirecting...'}
                 </button>
 
                 <button
-                  onClick={async () => {
+                  onClick={async (e) => {
+                    e.stopPropagation();
                     setAddingToCart(prev => ({ ...prev, [item.id]: 'loading' }));
                     await addToCart(item);
                     setAddingToCart(prev => ({ ...prev, [item.id]: 'success' }));
@@ -235,12 +234,12 @@ const BestSeller = ({ onBuyNow }) => {
                       setAddingToCart(prev => ({ ...prev, [item.id]: null }));
                     }, 1500);
                   }}
-                  className="w-1/2 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  className="flex-1 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-1 text-xs"
                   style={{ backgroundColor: "#a76665" }}
                   disabled={addingToCart[item.id]}
                 >
-                  {addingToCart[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={14} />}
-                  {addingToCart[item.id] === 'success' && <FaCheck size={14} />}
+                  {addingToCart[item.id] === 'loading' && <ImSpinner8 className="animate-spin" size={12} />}
+                  {addingToCart[item.id] === 'success' && <FaCheck size={12} />}
                   {!addingToCart[item.id] && 'Add to Cart'}
                   {addingToCart[item.id] === 'loading' && 'Adding...'}
                   {addingToCart[item.id] === 'success' && 'Added!'}

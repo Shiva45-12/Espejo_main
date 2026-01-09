@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Logo flip animation */
+.logo-flip {
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.logo-flip:hover {
+  transform: scale(1.1) rotateY(180deg);
+}
 
 body{
     background-color: black;

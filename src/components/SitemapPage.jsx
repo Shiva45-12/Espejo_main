@@ -15,7 +15,7 @@ const SitemapPage = () => {
         const data = await res.json();
         setCategories(data.categories || []);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        // console.error('Error fetching categories:', error);
       }
     };
     fetchCategories();
@@ -28,7 +28,7 @@ const SitemapPage = () => {
         { name: 'Home', path: '/', icon: <FaHome /> },
         { name: 'Categories', path: '/categories', icon: <FaBoxOpen /> },
         { name: 'Best Seller', path: '/bestseller', icon: <FaStar /> },
-        { name: 'Metal Mirror', path: '/metal-mirror', icon: <FaGem /> },
+        { name: 'Products', path: '/metal-mirror', icon: <FaGem /> },
         { name: 'About Us', path: '/about', icon: <FaInfoCircle /> },
         { name: 'Contact Us', path: '/contact', icon: <FaPhone /> }
       ]
@@ -111,28 +111,6 @@ const SitemapPage = () => {
             </div>
           ))}
         </div>
-
-        {/* Quick Stats */}
-        {/* <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className={`${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-100 border-gray-200'} p-6 rounded-xl border text-center`}>
-            <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>
-              {Object.values(siteLinks).reduce((total, section) => total + section.links.length, 0)}
-            </div>
-            <div className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Total Pages</div>
-          </div>
-          <div className={`${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-100 border-gray-200'} p-6 rounded-xl border text-center`}>
-            <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>
-              {categories.length}
-            </div>
-            <div className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Product Categories</div>
-          </div>
-          <div className={`${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-100 border-gray-200'} p-6 rounded-xl border text-center`}>
-            <div className="text-3xl font-bold mb-2" style={{color: '#862b2a'}}>
-              {Object.keys(siteLinks).length}
-            </div>
-            <div className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Main Sections</div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

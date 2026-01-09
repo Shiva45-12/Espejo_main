@@ -14,11 +14,21 @@ export const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastFetch, setLastFetch] = useState(null);
+  
+  // Initialize isCleared from localStorage
+  const [isCleared, setIsCleared] = useState(() => {
+    return localStorage.getItem('ordersCleared') === 'true';
+  });
 
   // FETCH ORDERS with caching
   const fetchOrders = async (force = false) => {
     const token = localStorage.getItem("token");
     if (!token) return;
+
+    // If orders were manually cleared, don't fetch unless forced
+    if (isCleared && !force) {
+      return;
+    }
 
     // Prevent repeated calls within 30 seconds
     const now = Date.now();
@@ -38,9 +48,12 @@ export const OrderProvider = ({ children }) => {
       );
 
       const data = await res.json();
+      console.log('📊 Orders API Response:', data);
       if (res.ok) {
         setOrders(data.orders || data.data || data || []);
         setLastFetch(now);
+        setIsCleared(false); // Reset cleared flag when new data is fetched
+        localStorage.removeItem('ordersCleared'); // Remove from localStorage
       } else {
         console.error("Order fetch error:", data);
       }
@@ -127,6 +140,9 @@ export const OrderProvider = ({ children }) => {
   const clearOrders = async () => {
     try {
       setOrders([]);
+      setIsCleared(true); // Mark as manually cleared
+      localStorage.setItem('ordersCleared', 'true'); // Persist in localStorage
+      setLastFetch(null); // Reset fetch timestamp
       console.log('✅ Order history cleared');
       return true;
     } catch (err) {
@@ -150,6 +166,7 @@ export const OrderProvider = ({ children }) => {
         trackOrder,
         addOrder,
         clearOrders,
+        isCleared, // Expose cleared state
       }}
     >
       {children}

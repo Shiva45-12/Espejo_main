@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaHeart, FaCheck } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
+import PageLoader from "./PageLoader";
 
 const PRODUCT_API = "https://glassadminpanelapi.onrender.com/api/products";
 
@@ -90,11 +91,7 @@ const AllProductsPage = ({ onBuyNow }) => {
   }, []);
 
   if (loading) {
-    return (
-      <div className={`min-h-screen p-5 text-center ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
-        <div className="pt-20">Loading all products...</div>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   return (
@@ -108,7 +105,8 @@ const AllProductsPage = ({ onBuyNow }) => {
           {products.map((item, i) => (
             <div
               key={item.id || i}
-              className={`relative rounded-xl overflow-hidden shadow-lg group ${isDark ? 'bg-gray-800' : 'bg-white'}`}
+              onClick={() => navigate(`/product/${item.id}`)}
+              className={`relative rounded-xl overflow-hidden shadow-lg group cursor-pointer ${isDark ? 'bg-gray-800' : 'bg-white'}`}
             >
               <img
                 src={item.img}
@@ -143,7 +141,7 @@ const AllProductsPage = ({ onBuyNow }) => {
                 <FaHeart size={16} />
               </button>
 
-              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 md:group-hover:opacity-100 md:opacity-0 opacity-100 transition-opacity z-20">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();

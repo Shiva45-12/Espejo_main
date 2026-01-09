@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { FaHeart, FaArrowLeft } from "react-icons/fa";
+import PageLoader from "./PageLoader";
 
 const CATEGORY_API = "https://glassadminpanelapi.onrender.com/api/categories";
 const PRODUCT_API = "https://glassadminpanelapi.onrender.com/api/products";
@@ -22,10 +23,84 @@ const CategoryPage = ({ onBuyNow }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        /* ========= FETCH CATEGORIES ========= */
+        /* ========= FETCH CATEGORIES FROM API ========= */
         const catRes = await fetch(CATEGORY_API);
         const catData = await catRes.json();
 
+        // Check for specific categories first
+        if (slug === 'mirror' || slug === 'console' || slug === 'console-mirror') {
+          // console.log(`🔍 Handling special category: ${slug}`);
+          let categoryName, categoryDescription;
+          
+          if (slug === 'mirror') {
+            categoryName = 'Mirror';
+            categoryDescription = 'Premium mirrors with elegant designs and superior quality';
+          } else if (slug === 'console') {
+            categoryName = 'Console';
+            categoryDescription = 'Premium console tables with modern designs and storage solutions';
+          } else {
+            categoryName = 'Console + Mirror';
+            categoryDescription = 'Complete console and mirror combinations for elegant interiors';
+          }
+          
+          setCategory({
+            _id: slug,
+            name: categoryName,
+            slug: slug,
+            description: categoryDescription
+          });
+
+          /* ========= FETCH PRODUCTS ========= */
+          // console.log(`🔄 Fetching products for ${slug}...`);
+          const prodRes = await fetch(PRODUCT_API);
+          const prodData = await prodRes.json();
+          
+          // console.log(`📊 Products API response:`, prodData);
+          // console.log(`📊 Total products:`, prodData?.products?.length);
+
+          // Filter products by category name with multiple variations
+          const filteredProducts = prodData?.products?.filter((p) => {
+            const productCategoryName = p.category?.name?.toLowerCase();
+            // console.log(`🔍 Product: ${p.name}, Category: ${productCategoryName}`);
+            
+            if (slug === 'mirror') {
+              const matches = productCategoryName?.includes('mirror') && 
+                             !productCategoryName?.includes('console');
+              // console.log(`🔍 Mirror match for "${productCategoryName}": ${matches}`);
+              return matches;
+            } else if (slug === 'console') {
+              const matches = (productCategoryName?.includes('console') || 
+                             productCategoryName?.includes('console table') ||
+                             productCategoryName?.includes('console tables')) &&
+                             !productCategoryName?.includes('mirror');
+              // console.log(`🔍 Console match for "${productCategoryName}": ${matches}`);
+              return matches;
+            } else {
+              const matches = productCategoryName?.includes('console') && 
+                             productCategoryName?.includes('mirror');
+              // console.log(`🔍 Console+Mirror match for "${productCategoryName}": ${matches}`);
+              return matches;
+            }
+          }) || [];
+          
+          // console.log(`✅ Filtered products for ${slug}:`, filteredProducts);
+          // console.log(`✅ Filtered products count:`, filteredProducts.length);
+
+          const mappedProducts = filteredProducts.map((p, index) => ({
+            id: p._id || `prod-${index}`,
+            img: p.mainImage?.url || "https://via.placeholder.com/400",
+            title: p.name,
+            oldPrice: p.discountPercent ? `₹${p.price.toLocaleString()}` : "",
+            newPrice: `₹${(p.finalPrice || p.price).toLocaleString()}`,
+            price: `₹${(p.finalPrice || p.price).toLocaleString()}`,
+          }));
+
+          setProducts(mappedProducts);
+          setLoading(false);
+          return;
+        }
+
+        // Handle other categories from API
         const foundCategory = catData?.categories?.find(
           (cat) => cat.slug === slug
         );
@@ -59,7 +134,7 @@ const CategoryPage = ({ onBuyNow }) => {
 
         setProducts(mappedProducts);
       } catch (error) {
-        console.error("Category fetch error:", error);
+        // console.error("Category fetch error:", error);
         setCategory(null);
         setProducts([]);
       } finally {
@@ -72,15 +147,7 @@ const CategoryPage = ({ onBuyNow }) => {
 
   /* ========= LOADING ========= */
   if (loading) {
-    return (
-      <div
-        className={`min-h-screen flex items-center justify-center ${
-          isDark ? "bg-black text-white" : "bg-white text-black"
-        }`}
-      >
-        <p className="text-xl">Loading category...</p>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   /* ========= CATEGORY NOT FOUND ========= */
@@ -114,7 +181,7 @@ const CategoryPage = ({ onBuyNow }) => {
         {/* HEADER */}
         <div className="flex items-center gap-4 mb-6">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="text-2xl hover:text-[#862b2a]"
           >
             <FaArrowLeft />
@@ -143,19 +210,25 @@ const CategoryPage = ({ onBuyNow }) => {
             {products.map((item, index) => (
               <div
                 key={item.id || index}
-                className="rounded bg-white text-black shadow-lg overflow-hidden"
+                onClick={() => navigate(`/product/${item.id}`)}
+                className={`rounded overflow-hidden shadow-lg transition-all duration-300 cursor-pointer ${
+                  isDark ? 'bg-gray-800 text-white' : 'bg-white text-black'
+                }`}
               >
                 {/* IMAGE */}
                 <div className="relative">
                   <button
-                    onClick={() =>
+                    onClick={(e) => {
+                      e.stopPropagation();
                       isInWishlist(item.id)
                         ? removeFromWishlist(item.id)
-                        : addToWishlist(item)
-                    }
-                    className={`absolute top-4 right-4 p-2 rounded-full z-10 ${
+                        : addToWishlist(item);
+                    }}
+                    className={`absolute top-4 right-4 p-2 rounded-full z-10 transition-colors ${
                       isInWishlist(item.id)
                         ? "bg-red-500 text-white"
+                        : isDark
+                        ? "bg-gray-700 text-white hover:bg-red-500 hover:text-white"
                         : "bg-white text-gray-700 hover:bg-red-500 hover:text-white"
                     }`}
                   >
@@ -181,7 +254,9 @@ const CategoryPage = ({ onBuyNow }) => {
 
                   <div className="mt-2">
                     {item.oldPrice && (
-                      <p className="text-gray-400 text-sm line-through">
+                      <p className={`text-sm line-through ${
+                        isDark ? 'text-gray-400' : 'text-gray-400'
+                      }`}>
                         {item.oldPrice}
                       </p>
                     )}
@@ -192,13 +267,19 @@ const CategoryPage = ({ onBuyNow }) => {
 
                   <div className="mt-4 flex gap-3">
                     <button
-                      onClick={() => onBuyNow && onBuyNow(item)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBuyNow && onBuyNow(item);
+                      }}
                       className="w-1/2 bg-[#898383] text-white py-2 rounded-lg"
                     >
                       Buy Now
                     </button>
                     <button
-                      onClick={() => addToCart(item)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(item);
+                      }}
                       className="w-1/2 bg-[#862b2a] text-white py-2 rounded-lg"
                     >
                       Add to Cart

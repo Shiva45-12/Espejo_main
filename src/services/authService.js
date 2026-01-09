@@ -132,8 +132,8 @@ export const updateUserProfile = async (profileData) => {
       }
     };
 
-    console.log('✏️ Updating user profile...');
-    console.log('📦 Profile data being sent:', apiData);
+    // console.log('✏️ Updating user profile...');
+    // console.log('📦 Profile data being sent:', apiData);
     
     const response = await fetch(`${API_BASE}/profile`, {
       method: "PUT",
@@ -145,10 +145,10 @@ export const updateUserProfile = async (profileData) => {
     });
 
     const data = await response.json();
-    console.log('📊 Update response:', { status: response.status, data });
+    // console.log('📊 Update response:', { status: response.status, data });
 
     if (response.ok) {
-      console.log('✅ Profile updated successfully');
+      // console.log('✅ Profile updated successfully');
       return { success: true, data };
     } else {
       console.error('❌ Profile update failed:', data);
@@ -167,9 +167,9 @@ export const updateUserProfile = async (profileData) => {
 
 // 🚪 Logout User
 export const logoutUser = () => {
-  console.log('🚪 Logging out user...');
+  // console.log('🚪 Logging out user...');
   localStorage.removeItem('token');
-  console.log('✅ Token removed from localStorage');
+  // console.log('✅ Token removed from localStorage');
   
   return { success: true, message: 'Logged out successfully' };
 };

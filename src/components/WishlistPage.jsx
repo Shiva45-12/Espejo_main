@@ -11,12 +11,8 @@ import {
   FaEye
 } from 'react-icons/fa';
 import { showSuccess, showCart } from '../components/CustomLoader';
-import ProductModal from './ProductModal';
 
 const WishlistPage = ({ onBuyNow }) => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navigate = useNavigate();
   const { isDark } = useTheme();
   const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
@@ -136,10 +132,7 @@ const WishlistPage = ({ onBuyNow }) => {
 
                   <div className="space-y-3">
                     <button
-                      onClick={() => {
-                        setSelectedProduct(item);
-                        setIsModalOpen(true);
-                      }}
+                      onClick={() => navigate(`/product/${item.id}`)}
                       className={`w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 ${
                         isDark
                           ? 'bg-blue-600 hover:bg-blue-700'
@@ -177,19 +170,6 @@ const WishlistPage = ({ onBuyNow }) => {
           </div>
         )}
       </div>
-
-      <ProductModal
-        product={selectedProduct}
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedProduct(null);
-        }}
-        onBuyNow={(product) => {
-          setIsModalOpen(false);
-          onBuyNow && onBuyNow(product);
-        }}
-      />
     </div>
   );
 };

@@ -48,7 +48,7 @@ const Header = ({ onUserClick }) => {
         const data = await res.json();
         setCategories(data.categories || []);
       } catch (error) {
-        console.error("Category fetch error:", error);
+        // console.error("Category fetch error:", error);
       }
     };
     fetchCategories();
@@ -63,8 +63,7 @@ const Header = ({ onUserClick }) => {
   const Menu = [
     { name: "Home", path: "/" },
     { name: "BestSeller", path: "/bestseller" },
-    { name: "Metal Mirror", path: "/metal-mirror" },
-    { name: "Blog", path: "/blog" },
+    { name: "Products", path: "/metal-mirror" },
     { name: "About Us", path: "/about" },
     { name: "Contact Us", path: "/contact" },
   ];

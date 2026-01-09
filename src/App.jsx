@@ -20,7 +20,10 @@ import BecomeDealerPage from './components/BecomeDealerPage.jsx'
 import SitemapPage from './components/SitemapPage.jsx'
 import BlogPage from './components/BlogPage.jsx'
 import BlogDetailPage from './components/BlogDetailPage.jsx'
+import OrderDetailPage from './components/OrderDetailPage.jsx'
 import AllProductsPage from './components/AllProductsPage.jsx'
+import ProductDetailPage from './components/ProductDetailPage.jsx'
+import OffersPage from './components/OffersPage.jsx'
 import WhyChooseEspezoPage from './components/WhyChooseEspezoPage.jsx'
 import ReturnPolicyPage from './components/ReturnPolicyPage.jsx'
 import SearchPage from './components/SearchPage.jsx'
@@ -121,7 +124,10 @@ function MainContent() {
         <Route path="/sitemap" element={<SitemapPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailPage />} />
+        <Route path="/order/:orderId" element={<OrderDetailPage />} />
         <Route path="/all-products" element={<AllProductsPage onBuyNow={handleBuyNow} />} />
+        <Route path="/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/offers" element={<OffersPage />} />
         <Route path="/why-choose-espezo" element={<WhyChooseEspezoPage />} />
         <Route path="/return-policy" element={<ReturnPolicyPage />} />
         <Route path="/search" element={<SearchPage onBuyNow={handleBuyNow} />} />

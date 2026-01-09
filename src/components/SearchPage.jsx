@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useTheme } from '../context/ThemeContext';
 import { FaHeart } from 'react-icons/fa';
+import PageLoader from './PageLoader';
 
 const SearchPage = ({ onBuyNow }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const { isDark } = useTheme();
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -67,9 +69,7 @@ const SearchPage = ({ onBuyNow }) => {
         </div>
 
         {loading ? (
-          <div className="text-center py-20">
-            <div className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Searching...</div>
-          </div>
+          <PageLoader />
         ) : searchResults.length === 0 ? (
           <div className="text-center py-20">
             <div className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-4`}>
@@ -80,7 +80,11 @@ const SearchPage = ({ onBuyNow }) => {
         ) : (
           <div className={`${searchResults.length > 4 ? 'flex overflow-x-auto gap-8 pb-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'}`} style={searchResults.length > 4 ? {scrollbarWidth: 'none', msOverflowStyle: 'none'} : {}} onScroll={(e) => e.target.style.setProperty('--webkit-scrollbar', 'none')}>
             {searchResults.map((product) => (
-              <div key={product.id} className={`${isDark ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg overflow-hidden transition-colors ${searchResults.length > 4 ? 'min-w-[350px] flex-shrink-0' : ''}`}>
+              <div 
+                key={product.id} 
+                onClick={() => navigate(`/product/${product.id}`)}
+                className={`${isDark ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg overflow-hidden transition-colors cursor-pointer ${searchResults.length > 4 ? 'min-w-[350px] flex-shrink-0' : ''}`}
+              >
                 <div className="relative">
                   {product.video ? (
                     <video
@@ -125,7 +129,10 @@ const SearchPage = ({ onBuyNow }) => {
                   
                   <div className="flex gap-2">
                     <button 
-                      onClick={() => onBuyNow && onBuyNow(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBuyNow && onBuyNow(product);
+                      }}
                       className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm"
                       style={{backgroundColor: '#898383'}}
                       onMouseEnter={(e) => e.target.style.backgroundColor = '#6b6161'}
@@ -134,7 +141,10 @@ const SearchPage = ({ onBuyNow }) => {
                       Buy Now
                     </button>
                     <button 
-                      onClick={() => addToCart(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
                       className="flex-1 text-white py-2 rounded font-semibold transition-colors text-sm"
                       style={{backgroundColor: '#862b2a'}}
                       onMouseEnter={(e) => e.target.style.backgroundColor = '#6b1f1e'}

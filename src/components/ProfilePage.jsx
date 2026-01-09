@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { useOrder } from "../context/OrderContext";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import {
   FaUser,
@@ -121,7 +122,8 @@ const AddressCard = ({ address, onDelete, onUpdate, isDark }) => {
 const ProfilePage = () => {
   const { user, isLoggedIn, logout, updateProfile } = useAuth();
   const { isDark } = useTheme();
-  const { orders, fetchOrders, cancelOrder, loading, clearOrders } = useOrder();
+  const { orders, fetchOrders, cancelOrder, loading, clearOrders, isCleared } = useOrder();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("profile");
   const [editMode, setEditMode] = useState(false);
@@ -771,8 +773,23 @@ const ProfilePage = () => {
               {!loading && orders.length === 0 && (
                 <div className="text-center py-16">
                   <FaBoxOpen className="mx-auto text-6xl text-gray-400 mb-4" />
-                  <p className="text-gray-400 text-lg">No orders found</p>
-                  <p className="text-gray-500 text-sm mt-2">Your order history will appear here</p>
+                  {isCleared ? (
+                    <>
+                      <p className="text-gray-400 text-lg">Order history cleared</p>
+                      <p className="text-gray-500 text-sm mt-2 mb-4">Your order history has been cleared successfully</p>
+                      <button
+                        onClick={() => fetchOrders(true)}
+                        className="bg-[#a76665] hover:bg-[#8f5654] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                      >
+                        Refresh Orders
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-gray-400 text-lg">No orders found</p>
+                      <p className="text-gray-500 text-sm mt-2">Your order history will appear here</p>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -780,9 +797,10 @@ const ProfilePage = () => {
                 {orders.map((order) => (
                   <div
                     key={order._id}
-                    className={`p-6 rounded-2xl border shadow-lg hover:shadow-xl transition-all ${isDark
-                        ? "border-gray-700 bg-gray-800"
-                        : "border-gray-200 bg-white"
+                    onClick={() => navigate(`/order/${order._id}`)}
+                    className={`p-6 rounded-2xl border shadow-lg hover:shadow-xl transition-all cursor-pointer transform hover:scale-[1.02] ${isDark
+                        ? "border-gray-700 bg-gray-800 hover:bg-gray-750"
+                        : "border-gray-200 bg-white hover:bg-gray-50"
                       }`}
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
@@ -811,14 +829,20 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <p className="text-xl font-bold text-[#a76665]">
-                        Total: ₹{order.totalAmount || order.total || '0'}
-                      </p>
+                      <div>
+                        <p className="text-xl font-bold text-[#a76665]">
+                          Total: ₹{order.totalAmount || order.total || '0'}
+                        </p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          Click to view details
+                        </p>
+                      </div>
 
                       {order.status !== "Delivered" &&
                         order.status !== "Cancelled" && (
                           <button
-                            onClick={async () => {
+                            onClick={async (e) => {
+                              e.stopPropagation();
                               const result = await Swal.fire({
                                 title: 'Cancel Order?',
                                 text: 'Are you sure you want to cancel this order?',

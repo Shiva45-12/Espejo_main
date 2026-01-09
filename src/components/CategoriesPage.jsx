@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { FaArrowLeft, FaBoxOpen, FaEye } from 'react-icons/fa';
+import PageLoader from './PageLoader';
 
 const CategoriesPage = () => {
   const navigate = useNavigate();
@@ -47,11 +48,7 @@ const CategoriesPage = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-black text-white' : 'bg-white text-black'}`}>
-        <p className="text-xl">Loading categories...</p>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   return (
